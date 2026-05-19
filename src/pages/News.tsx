@@ -101,7 +101,7 @@ function News() {
 
                     {/* === HEADER HALAMAN === */}
                     <div className="text-center border-b border-gray-200 dark:border-green-800 pb-6">
-                        <h1 className="text-3xl font-extrabold tracking-tight text-green-900 dark:text-white sm:text-4xl">
+                        <h1 className="text-3xl font-semibold tracking-tight text-green-900 dark:text-white sm:text-4xl">
                             Kabar & Informasi Desa
                         </h1>
                         <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
@@ -220,10 +220,10 @@ function News() {
                                                 />
                                                 <div className="text-left">
                                                     <p className="text-[10px] font-semibold text-gray-900 dark:text-white leading-tight">{berita.author.name}</p>
-                                                    <p className="text-[9px] text-gray-300 leading-none">{berita.author.role}</p>
+                                                    <p className="text-[9px] text-gray-400 leading-none">{berita.author.role}</p>
                                                 </div>
                                             </div>
-                                            <time dateTime={berita.datetime} className="text-[10px] text-gray-300">
+                                            <time dateTime={berita.datetime} className="text-[10px] text-gray-400">
                                                 {berita.date}
                                             </time>
                                         </div>

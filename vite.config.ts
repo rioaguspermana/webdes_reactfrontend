@@ -20,6 +20,26 @@ export default defineConfig(({ mode }) => {
       outDir: '../gobackend/web',
       // Mengosongkan folder tujuan
       emptyOutDir: true,
+      chunkSizeWarningLimit: 800,
+      rollupOptions: {
+        output: {
+          // 🔥 Strategi pemecahan otomatis: Memisahkan library pihak ketiga dari kode inti Anda
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              // Jika library besar berasal dari recharts, pisahkan menjadi file khusus
+              if (id.includes('recharts') || id.includes('d3')) {
+                return 'vendor-charts';
+              }
+              // Jika berasal dari flowbite, pisahkan menjadi file khusus
+              if (id.includes('flowbite')) {
+                return 'vendor-ui';
+              }
+              // Sisanya satukan ke dalam file vendor umum
+              return 'vendor-libs';
+            }
+          }
+        }
+      }
     },
     server: {
       proxy: {

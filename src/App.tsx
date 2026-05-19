@@ -1,7 +1,7 @@
 'use client'
 
 import './App.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ProtectedRoute } from './component/ProtectedRoute';
 
 // Components
@@ -13,8 +13,17 @@ import NotFound from './pages/Notfound';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import VillageProfile from './pages/VillageProfile';
+import Infographic from './pages/Infographic';
 import Map from './pages/Map';
 import News from './pages/News';
+import UmkmPage from './pages/Umkm';
+import VillageDemographicSubPage from './component/Public/Infografi/VillageDemographic';
+import ApbdesDesaSubPage from './component/Public/Infografi/Apbdes';
+import StuntingSubPage from './component/Public/Infografi/Stunting';
+import BansosSubPage from './component/Public/Infografi/Bansos';
+import IdmSubPage from './component/Public/Infografi/Idm';
+import SdgsSubPage from './component/Public/Infografi/Sdgs';
+import Ppid from './pages/Ppid';
 
 function App() {
 
@@ -24,8 +33,22 @@ function App() {
       <Routes>
         <Route path='/' element={<Homepage />} />
         <Route path='/profil-desa' element={<VillageProfile />} />
+        <Route path="/infografis" element={<Infographic />}>
+          {/* Mengalihkan /infografis langsung menuju /infografis/penduduk secara otomatis */}
+          <Route index element={<Navigate to="penduduk" replace />} />
+
+          {/* Rute halaman anak (Path relatif tanpa tanda '/' di depan) */}
+          <Route path="penduduk" element={<VillageDemographicSubPage />} />
+          <Route path="apbdes" element={<ApbdesDesaSubPage />} />
+          <Route path="stunting" element={<StuntingSubPage />} />
+          <Route path="bansos" element={<BansosSubPage />} />
+          <Route path="idm" element={<IdmSubPage />} />
+          <Route path="sdgs" element={<SdgsSubPage />} />
+        </Route>
         <Route path='/peta' element={<Map />} />
         <Route path='/berita' element={<News />} />
+        <Route path='/umkm-desa' element={<UmkmPage />} />
+        <Route path="ppid" element={<Ppid />} />
         <Route path='/login' element={<Login />} />
 
         <Route element={<ProtectedRoute />}>

@@ -33,8 +33,8 @@ function VillageBudgetComponent() {
                             </div>
                         </div>
                         <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-8">
-                            <div className="w-full h-80">
-                                <ResponsiveContainer width="100%" height="100%">
+                            <div className="w-full">
+                                <ResponsiveContainer width="100%" height={320}>
                                     <BarChart
                                         data={dataAPBDesa}
                                         margin={{ top: 10, right: 10, left: -15, bottom: 0 }}

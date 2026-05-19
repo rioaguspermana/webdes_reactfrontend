@@ -13,7 +13,7 @@ const largeScreenShortcuts = [
     null,
     null,
     { name: 'Peta', href: 'peta', icon: 'icon_peta.png' },
-    { name: 'IDM', href: 'idm', icon: 'icon_idm.png' },
+    { name: 'IDM', href: 'infografis/idm', icon: 'icon_idm.png' },
     { name: 'Berita', href: 'berita', icon: 'icon_berita.png' },
     { name: 'Informasi (PPID)', href: 'ppid', icon: 'icon_informasi.png' },
     null,
@@ -23,7 +23,7 @@ const smallScreenShortcuts = [
     { name: 'Profil Desa', href: 'profil-desa', icon: 'icon_profil_desa.png' },
     { name: 'Infografis', href: 'infografis', icon: 'icon_infografis.png' },
     { name: 'Peta', href: 'peta', icon: 'icon_peta.png' },
-    { name: 'IDM', href: 'idm', icon: 'icon_idm.png' },
+    { name: 'IDM', href: 'infografis/idm', icon: 'icon_idm.png' },
     { name: 'Berita', href: 'berita', icon: 'icon_berita.png' },
     { name: 'Informasi (PPID)', href: 'ppid', icon: 'icon_informasi.png' },
 ]

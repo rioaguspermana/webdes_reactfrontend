@@ -48,8 +48,8 @@ function ResidentComponent() {
                         {/* Kontainer Utama Grafik & Legenda Berdampingan */}
                         <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-8">
                             {/* SISI KIRI: Donut Chart dengan Angka Total di Tengah */}
-                            <div className="relative w-1/2 h-48 flex items-center justify-center shrink-0">
-                                <ResponsiveContainer width="100%" height="100%">
+                            <div className="relative w-1/2 flex items-center justify-center shrink-0">
+                                <ResponsiveContainer width="100%" height={220}>
                                     <PieChart>
                                         <Tooltip
                                             content={({ active, payload }) => {

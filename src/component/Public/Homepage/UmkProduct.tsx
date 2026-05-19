@@ -10,7 +10,7 @@ const umkProduct: HomeSection = {
 const products = [
     {
         id: 1,
-        name: 'Caping',
+        name: 'Caping Bambu',
         href: '#',
         price: 'Rp 25.000',
         description: 'Topi tradisional berbentuk kerucut yang terbuat dari anyaman bambu, untuk melindungi kepala dari terik matahari, tersedia untuk ukuran anak-anak.',
@@ -19,7 +19,7 @@ const products = [
     },
     {
         id: 2,
-        name: 'Besek',
+        name: 'Besek Bambu',
         href: '#',
         price: 'Rp 3.500',
         description: 'Wadah tradisional yang terbuat dari anyaman bambu, berbentuk kotak, digunakan untuk tempat makanan, buah, atau bingkisan karena sifatnya ringan, ramah lingkungan.',
@@ -55,7 +55,7 @@ const products = [
     },
     {
         id: 6,
-        name: 'Tampah',
+        name: 'Tampah Bambu',
         href: '#',
         price: 'Rp 55.000',
         description: 'Tampah bambu, Nampan, Wadah serbaguna diameter 60cm',

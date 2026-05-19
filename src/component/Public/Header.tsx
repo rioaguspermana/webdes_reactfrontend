@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom'
 import { cleanFileUrl } from '@/@utils/cleanFileUrl'
 import ThemeToggle from './ThemeToggle'
 import { useProfileStore } from '@/store/useProfilDesa'
+import FooterComponent from './Footer'
 
 
 const data_desa = {
@@ -94,14 +95,14 @@ function HeaderComponent({ is_homepage }: { is_homepage?: boolean }) {
             <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="">
                 <div className="fixed inset-0 z-50" />
                 <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto sm:max-w-sm sm:ring-1 sm:ring-green-900/10 bg-white dark:sm:ring-green-100/10">
-                    <div className='p-4 bg-green-600 lg:bg-green-900/50 dark:bg-green-900'>
+                    <div className='fixed top-0 left-0 right-0 p-4 bg-green-600 lg:bg-green-900/50 dark:bg-green-900'>
                         <div className="flex items-center justify-between">
                             <NavLink to={'/'} className="-m-1.5 p-1.5">
                                 <div className='flex'>
                                     <span className="sr-only">{data_desa.nama}</span>
                                     <img
                                         alt=""
-                                        src={cleanFileUrl(`${import.meta.env.VITE_APP_URL} /image/`, 'logo_desa_sejahtera.png')}
+                                        src={cleanFileUrl(`${import.meta.env.VITE_APP_URL}/image/`, profilDesa?.logo_desa ?? "")}
                                         className="h-16 w-auto"
                                     />
                                     <div className='content-center px-4'>
@@ -120,7 +121,7 @@ function HeaderComponent({ is_homepage }: { is_homepage?: boolean }) {
                             </button>
                         </div>
                     </div>
-                    <div className="p-4 bg-white dark:bg-green-800">
+                    <div className="p-4 mt-24 bg-white dark:bg-green-800 h-[80%]">
                         <div className="mt-6 flow-root">
                             <div className="-my-6 divide-y divide-gray-500/10 dark:divide-white/10">
                                 <div className="space-y-2 py-6">
@@ -128,7 +129,7 @@ function HeaderComponent({ is_homepage }: { is_homepage?: boolean }) {
                                         <NavLink
                                             key={item.name}
                                             to={item.href}
-                                            className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
+                                            className={({ isActive }) => ` ${isActive ? 'underline underline-offset-6 font-semibold' : ''} -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5`}
                                         >
                                             {item.name}
                                         </NavLink>
@@ -137,6 +138,7 @@ function HeaderComponent({ is_homepage }: { is_homepage?: boolean }) {
                             </div>
                         </div>
                     </div>
+                    <FooterComponent />
                 </DialogPanel>
             </Dialog>
         </header >
