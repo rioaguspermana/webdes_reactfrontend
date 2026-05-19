@@ -1,0 +1,110 @@
+@import "tailwindcss";
+@import "flowbite-react/plugin/tailwindcss";
+@source "../.flowbite-react/class-list.json";
+@import "leaflet/dist/leaflet.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+/* Spesific element */
+.link-neumorphism {
+  border-radius: 6px;
+  background: #ffffff;
+  box-shadow:
+    5px 5px 10px #cccccc,
+    -5px -5px 10px #ffffff;
+}
+.link-neumorphism:hover {
+  border-radius: 6px;
+  background: linear-gradient(145deg, #e6e6e6, #ffffff);
+  box-shadow:
+    5px 5px 10px #cccccc,
+    -5px -5px 10px #ffffff;
+}
+
+/* Tema Gelap */
+/* Spesific element */
+.dark .link-neumorphism {
+  border-radius: 6px;
+  background: #206c4d;
+  box-shadow:
+    5px 5px 10px #1d6145,
+    -5px -5px 10px #237755;
+}
+.dark .link-neumorphism:hover {
+  border-radius: 6px;
+  background: linear-gradient(145deg, #1d6145, #227452);
+  box-shadow:
+    5px 5px 10px #1d6145,
+    -5px -5px 10px #237755;
+}
+
+/* 1. Atur elemen pembungkus luar sebagai jangkar posisi */
+.marker-cluster-kustom {
+  /* Warna bayangan lingkaran luar */
+  background-color: rgba(74, 222, 128, 0.35);
+  border-radius: 50%;
+  width: 40px !important; /* Samakan ukuran dengan L.point(40, 40) di React */
+  height: 40px !important; /* Samakan ukuran dengan L.point(40, 40) di React */
+  position: relative;
+  display: block;
+}
+
+/* 2. Atur lingkaran inti angka tepat di tengah-tengah bayangan luar */
+.marker-cluster-kustom div {
+  width: 28px; /* Ukuran lingkaran dalam sedikit lebih kecil dari bayangan */
+  height: 28px;
+  background-color: #4ade80; /* Warna hijau cerah utama */
+  border-radius: 50%;
+
+  /* Posisikan persis di tengah secara absolut */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* Desain teks angka */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  color: #1e293b;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Kategori Hijau untuk jumlah titik sedikit (di bawah 20) */
+.cluster-kecil {
+  /* Efek lingkaran luar transparan */
+  background-color: rgba(74, 222, 128, 0.4);
+}
+.cluster-kecil div {
+  background-color: #4ade80; /* Warna hijau cerah */
+}
+
+/* Kategori Kuning untuk jumlah titik sedang */
+.cluster-sedang {
+  /* Efek lingkaran luar transparan */
+  background-color: rgba(250, 204, 21, 0.4);
+}
+.cluster-sedang div {
+  /* Warna kuning cerah */
+  background-color: #facc15;
+  color: #ffffff; /* Ubah warna teks angka jadi putih agar kontras dan mudah dibaca */
+}
+
+/* Kategori Merah untuk jumlah titik padat */
+.cluster-besar {
+  /* Bayangan luar merah transparan */
+  background-color: rgba(239, 68, 68, 0.35);
+}
+.cluster-besar div {
+  background-color: #ef4444; /* Lingkaran inti merah cerah */
+  color: #ffffff; /* Ubah warna teks angka jadi putih agar kontras dan mudah dibaca */
+}
