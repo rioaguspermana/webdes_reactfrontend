@@ -11,7 +11,7 @@ function Login() {
     // Use Zustand Store
     const { executeLogin, isLoading } = useAuthStore();
     const profilDesa = useProfileStore((state) => state.profilDesa);
-    const fetchProfilDesa = useProfileStore((state) => state.fetchProfilDesa);
+    const { fetchPublicProfilDesa } = useProfileStore();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -21,8 +21,8 @@ function Login() {
 
     // Fetch data Profil Desa
     useEffect(() => {
-        fetchProfilDesa();
-    }, [fetchProfilDesa]);
+        fetchPublicProfilDesa();
+    }, [fetchPublicProfilDesa]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -50,7 +50,8 @@ function Login() {
                             : <div className="h-24 w-auto"></div>
                         }
                     </div>
-                    <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900 dark:text-white">
+                    <h3 className="mt-10 text-xl/9 font-semibold tracking-tight">{profilDesa?.nama_desa}</h3>
+                    <h2 className="text-center text-2xl/9 font-bold tracking-tight text-gray-900 dark:text-white">
                         Login dengan akun anda
                     </h2>
                 </div>

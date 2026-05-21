@@ -317,7 +317,7 @@ function Map(): React.JSX.Element {
             <HeaderComponent is_homepage={false} />
             <div className="w-full mt-10" >
                 <div className="bg-white py-16 sm:py-40 dark:bg-green-700">
-                    <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                    <div className="mx-auto max-w-6xl px-6 lg:px-8">
                         <div className="w-full lg:flex-auto text-center lg:text-left">
                             <h2 className="text-xl lg:text-4xl font-semibold tracking-tight text-pretty text-green-900 sm:text-5xl dark:text-white">
                                 {villageMap.title}
@@ -326,7 +326,7 @@ function Map(): React.JSX.Element {
                                 <div className="text-base lg:text-xl">{villageMap.post_content}</div>
                             </div>
                         </div>
-                        <div className='mx-auto max-w-7xl w-full h-140 lg:h-160 rounded-xl overflow-hidden isolate relative'>
+                        <div className='mx-auto max-w-6xl w-full h-140 lg:h-160 rounded-xl overflow-hidden isolate relative'>
                             <MapContainer
                                 center={posisiPusat}
                                 zoom={14}

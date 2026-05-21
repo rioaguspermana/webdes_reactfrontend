@@ -62,7 +62,7 @@ function PotentialComponent() {
     return (
         <div className="w-full">
             <div className="bg-white py-16 sm:py-48 dark:bg-green-700">
-                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                <div className="mx-auto max-w-6xl px-6 lg:px-8">
                     <div className="mx-auto max-w-2xl text-center">
                         <h2 className="text-xl lg:text-4xl font-semibold tracking-tight text-pretty text-green-900 sm:text-5xl dark:text-white">
                             {potential.title}
@@ -113,7 +113,7 @@ function PotentialComponent() {
                         ))}
                     </div>
                     <div className="mt-10 lg:mt-14 flex items-center justify-center gap-x-6 lg:justify-end">
-                        <Link to="/infografis/apb" className="font-semibold text-blue-700 dark:text-blue-200 hover:underline">
+                        <Link to="/potensi" className="font-semibold text-blue-700 dark:text-blue-200 hover:underline">
                             <div className="flex items-center space-x-2">
                                 <div>Lihat Potensi Lainnya{' '}</div>
                                 <ArrowRightIcon className="size-5" />

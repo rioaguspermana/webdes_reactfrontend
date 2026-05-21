@@ -13,15 +13,3 @@ export interface ProfilDesa {
     logo_desa: string;
     deskripsi_singkat: string;
 }
-
-export interface ProfileDesaState {
-    // 1. State
-    profilDesa: ProfilDesa | null;
-    isLoading: boolean;
-    error: string | null;
-
-    // 2. Actions
-    fetchProfilDesa: () => Promise<void>;
-    updateProfilDesa: (dataBaru: Partial<ProfilDesa>) => Promise<void>;
-    clearProfileStore: () => void;
-}

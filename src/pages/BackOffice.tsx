@@ -15,41 +15,34 @@ import {
     ArrowRightStartOnRectangleIcon,
     Bars3Icon,
     BellIcon,
-    CalendarIcon,
-    ChartPieIcon,
+    BuildingLibraryIcon,
     Cog6ToothIcon,
-    DocumentDuplicateIcon,
-    FolderIcon,
+    ComputerDesktopIcon,
     HomeIcon,
     UserCircleIcon,
     UserIcon,
-    UsersIcon,
     XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { useProfileStore } from '@/store/useProfilDesa'
 import { cleanFileUrl } from '@/@utils/cleanFileUrl'
 import { useAuthStore } from '@/store/useAuthStore'
+import { NavLink, Outlet } from 'react-router-dom'
+import ThemeToggle from '@/component/Public/ThemeToggle'
+import FloatingAlert from '@/component/BackOffice/FloatingAlert'
 
 const navigation = [
-    { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-    { name: 'Team', href: '#', icon: UsersIcon, current: false },
-    { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-    { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
-    { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
-    { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
+    { name: 'Dashboard', href: '/backoffice', icon: ComputerDesktopIcon },
+    { name: 'Profil Desa', href: '/backoffice/profil-desa', icon: BuildingLibraryIcon },
+    { name: 'Homepage Edit', href: '/backoffice/homepage-edit', icon: HomeIcon },
 ]
-const teams = [
-    { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
-    { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
-    { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
-]
+const teams: any[] = []
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
-function Dashboard() {
+function BackOffice() {
     const [sidebarOpen, setSidebarOpen] = useState(false)
 
     const profilDesa = useProfileStore((state) => state.profilDesa);
@@ -109,60 +102,61 @@ function Dashboard() {
                                             <ul role="list" className="-mx-2 space-y-1">
                                                 {navigation.map((item) => (
                                                     <li key={item.name}>
-                                                        <a
-                                                            href={item.href}
-                                                            className={classNames(
-                                                                item.current
+                                                        <NavLink
+                                                            to={item.href}
+                                                            end={item.href === '/backoffice'}
+                                                            className={({ isActive }) => classNames(
+                                                                isActive
                                                                     ? 'bg-gray-50 text-indigo-600 dark:bg-white/5 dark:text-white'
                                                                     : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white',
                                                                 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
                                                             )}
                                                         >
-                                                            <item.icon
-                                                                aria-hidden="true"
-                                                                className={classNames(
-                                                                    item.current
-                                                                        ? 'text-indigo-600 dark:text-white'
-                                                                        : 'text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-white',
-                                                                    'size-6 shrink-0',
-                                                                )}
-                                                            />
-                                                            {item.name}
-                                                        </a>
+                                                            {({ isActive }) => (
+                                                                <>
+                                                                    <item.icon
+                                                                        aria-hidden="true"
+                                                                        className={classNames(
+                                                                            isActive
+                                                                                ? 'text-indigo-600 dark:text-white'
+                                                                                : 'text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-white',
+                                                                            'size-6 shrink-0',
+                                                                        )}
+                                                                    />
+                                                                    {item.name}
+                                                                </>
+                                                            )}
+                                                        </NavLink>
                                                     </li>
                                                 ))}
                                             </ul>
                                         </li>
-                                        <li>
-                                            <div className="text-xs/6 font-semibold text-gray-400">Your teams</div>
-                                            <ul role="list" className="-mx-2 mt-2 space-y-1">
-                                                {teams.map((team) => (
-                                                    <li key={team.name}>
-                                                        <a
-                                                            href={team.href}
-                                                            className={classNames(
-                                                                team.current
-                                                                    ? 'bg-gray-50 text-indigo-600 dark:bg-white/5 dark:text-white'
-                                                                    : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white',
-                                                                'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
-                                                            )}
-                                                        >
-                                                            <span
-                                                                className={classNames(
-                                                                    team.current
-                                                                        ? 'border-indigo-600 text-indigo-600 dark:border-white/20 dark:text-white'
-                                                                        : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600 dark:border-white/10 dark:group-hover:border-white/20 dark:group-hover:text-white',
-                                                                    'flex size-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium dark:bg-white/5',
+                                        {teams.length > 0 &&
+                                            <li>
+                                                <div className="text-xs/6 font-semibold text-gray-400">Your teams</div>
+                                                <ul role="list" className="-mx-2 mt-2 space-y-1">
+                                                    {teams.map((team) => (
+                                                        <li key={team.name}>
+                                                            <NavLink
+                                                                to={team.href}
+                                                                className={({ isActive }) => classNames(
+                                                                    isActive
+                                                                        ? 'bg-gray-50 text-indigo-600 dark:bg-white/5 dark:text-white'
+                                                                        : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white',
+                                                                    'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
                                                                 )}
                                                             >
-                                                                {team.initial}
-                                                            </span>
-                                                            <span className="truncate">{team.name}</span>
-                                                        </a>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </li>
+                                                                {({ isActive }) => (
+                                                                    <>
+                                                                        {isActive ? "ssss" : team.name}
+                                                                    </>
+                                                                )}
+                                                            </NavLink>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </li>
+                                        }
                                         <li className="mt-auto">
                                             <a
                                                 href="#"
@@ -185,7 +179,7 @@ function Dashboard() {
                 {/* Static sidebar for desktop */}
                 <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col dark:bg-gray-900">
                     {/* Sidebar component, swap this element with another sidebar if you like */}
-                    <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4 dark:border-white/10 dark:bg-black/10">
+                    <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4 dark:border-white/10 dark:bg-gray-900">
                         <div className="flex h-16 shrink-0 items-center">
                             <img
                                 alt=""
@@ -203,60 +197,67 @@ function Dashboard() {
                                     <ul role="list" className="-mx-2 space-y-1">
                                         {navigation.map((item) => (
                                             <li key={item.name}>
-                                                <a
-                                                    href={item.href}
-                                                    className={classNames(
-                                                        item.current
+                                                <NavLink
+                                                    to={item.href}
+                                                    end={item.href === '/backoffice'}
+                                                    className={({ isActive }) => classNames(
+                                                        isActive
                                                             ? 'bg-gray-50 text-indigo-600 dark:bg-white/5 dark:text-white'
                                                             : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white',
                                                         'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
                                                     )}
                                                 >
-                                                    <item.icon
-                                                        aria-hidden="true"
-                                                        className={classNames(
-                                                            item.current
-                                                                ? 'text-indigo-600 dark:text-white'
-                                                                : 'text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-white',
-                                                            'size-6 shrink-0',
-                                                        )}
-                                                    />
-                                                    {item.name}
-                                                </a>
+                                                    {({ isActive }) => (
+                                                        <>
+                                                            <item.icon
+                                                                aria-hidden="true"
+                                                                className={classNames(
+                                                                    isActive
+                                                                        ? 'text-indigo-600 dark:text-white'
+                                                                        : 'text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-white',
+                                                                    'size-6 shrink-0',
+                                                                )}
+                                                            />
+                                                            {item.name}
+                                                        </>
+                                                    )}
+                                                </NavLink>
                                             </li>
                                         ))}
                                     </ul>
                                 </li>
-                                <li>
-                                    <div className="text-xs/6 font-semibold text-gray-400">Your teams</div>
-                                    <ul role="list" className="-mx-2 mt-2 space-y-1">
-                                        {teams.map((team) => (
-                                            <li key={team.name}>
-                                                <a
-                                                    href={team.href}
-                                                    className={classNames(
-                                                        team.current
-                                                            ? 'bg-gray-50 text-indigo-600 dark:bg-white/5 dark:text-white'
-                                                            : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white',
-                                                        'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
-                                                    )}
-                                                >
-                                                    <span
+                                {teams.length > 0 &&
+                                    <li>
+                                        <div className="text-xs/6 font-semibold text-gray-400">Your teams</div>
+                                        <ul role="list" className="-mx-2 mt-2 space-y-1">
+                                            {teams.map((team) => (
+                                                <li key={team.name}>
+                                                    <a
+                                                        href={team.href}
                                                         className={classNames(
-                                                            team.current
-                                                                ? 'border-indigo-600 text-indigo-600 dark:border-white/20 dark:text-white'
-                                                                : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600 dark:border-white/10 dark:group-hover:border-white/20 dark:group-hover:text-white',
-                                                            'flex size-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium dark:bg-white/5',
+                                                            false
+                                                                ? 'bg-gray-50 text-indigo-600 dark:bg-white/5 dark:text-white'
+                                                                : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white',
+                                                            'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
                                                         )}
                                                     >
-                                                        {team.initial}
-                                                    </span>
-                                                    <span className="truncate">{team.name}</span>
-                                                </a>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </li>
+                                                        <span
+                                                            className={classNames(
+                                                                false
+                                                                    ? 'border-indigo-600 text-indigo-600 dark:border-white/20 dark:text-white'
+                                                                    : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600 dark:border-white/10 dark:group-hover:border-white/20 dark:group-hover:text-white',
+                                                                'flex size-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium dark:bg-white/5',
+                                                            )}
+                                                        >
+                                                            {team.initial}
+                                                        </span>
+                                                        <span className="truncate">{team.name}</span>
+                                                    </a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </li>
+                                }
                                 <li className="mt-auto">
                                     <a
                                         href="#"
@@ -274,9 +275,10 @@ function Dashboard() {
                     </div>
                 </div>
 
-                <div className="lg:pl-72">
-                    <div className="sticky top-0 z-40 lg:mx-auto lg:max-w-7xl lg:px-8">
-                        <div className="flex h-16 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-0 lg:shadow-none dark:border-white/10 dark:bg-gray-900 dark:shadow-none">
+                <div className="lg:pl-72 dark:bg-zinc-950">
+                    {/* Topbar for desktop */}
+                    <div className="sticky top-0 z-40 lg:px-8 dark:bg-gray-900 border-b border-gray-200 lg:shadow-none dark:border-white/10 dark:shadow-none">
+                        <div className="flex h-16 items-center gap-x-4 bg-white px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-0">
                             <button
                                 type="button"
                                 onClick={() => setSidebarOpen(true)}
@@ -289,7 +291,7 @@ function Dashboard() {
                             {/* Separator */}
                             <div aria-hidden="true" className="h-6 w-px bg-gray-200 lg:hidden dark:bg-gray-700" />
 
-                            <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
+                            <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6 dark:bg-gray-900">
                                 <form action="#" method="GET" className="grid flex-1 grid-cols-1">
                                     <input
                                         name="search"
@@ -375,18 +377,24 @@ function Dashboard() {
                                             ))}
                                         </MenuItems>
                                     </Menu>
+
+                                    <ThemeToggle />
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    {/** MAIN CONTENT HERE */}
                     <main className="py-10">
-                        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{/* Your content */}</div>
+                        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                            <Outlet />
+                        </div>
                     </main>
                 </div>
+                <FloatingAlert />
             </div>
         </>
     )
 }
 
-export default Dashboard
+export default BackOffice

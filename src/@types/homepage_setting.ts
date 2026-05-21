@@ -1,0 +1,29 @@
+export interface HomepageSetting {
+    id: string;
+    shortcut_title: string;
+    shortcut_subtitle: string;
+    sambutan_kepdes: string;
+    sambutan_kepdes_content: string;
+    sambutan_kepdes_image: string;
+    map_title: string;
+    map_subtitle: string;
+    map_label: string;
+    sotk_title: string;
+    sotk_subtitle: string;
+    kependudukan_title: string;
+    kependudukan_subtitle: string;
+    apbdesa_title: string;
+    apbdesa_subtitle: string;
+    berita_title: string;
+    berita_subtitle: string;
+    potensi_title: string;
+    potensi_subtitle: string;
+    wisata_title: string;
+    wisata_subtitle: string;
+    daftar_wisata_title: string;
+    daftar_wisata_subtitle: string;
+    umk_title: string;
+    umk_subtitle: string;
+    galeri_title: string;
+    galeri_subtitle: string;
+}

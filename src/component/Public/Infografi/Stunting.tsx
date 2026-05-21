@@ -51,7 +51,7 @@ function StuntingSubPage() {
                     Infografis Pencegahan & Data Stunting
                 </h1>
                 <p className="mt-2 py-2 text-gray-500 dark:text-green-300">
-                    Pemantauan status gizi balita berkala guna mewujudkan Desa Kersik Bebas Stunting (Zero Stunting).
+                    Pemantauan status gizi balita berkala guna mewujudkan Desa Sejahtera Bebas Stunting (Zero Stunting).
                 </p>
             </div>
 

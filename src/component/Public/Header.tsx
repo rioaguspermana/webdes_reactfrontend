@@ -31,7 +31,6 @@ function HeaderComponent({ is_homepage }: { is_homepage?: boolean }) {
 
     // Use Zustand Store
     const profilDesa = useProfileStore((state) => state.profilDesa);
-    const fetchProfilDesa = useProfileStore((state) => state.fetchProfilDesa);
 
     // Check Scroll
     useEffect(() => {
@@ -50,13 +49,8 @@ function HeaderComponent({ is_homepage }: { is_homepage?: boolean }) {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Fetch data Profil Desa
-    useEffect(() => {
-        fetchProfilDesa();
-    }, [fetchProfilDesa]);
-
     return (
-        <header className={`fixed top-0 left-0 right-0 w-full z-10 bg-green-600 dark:bg-green-900 ${isOnTop && is_homepage ? 'lg:bg-green-600/50 lg:dark:bg-green-900/70' : ''} `}>
+        <header className={`fixed top-0 left-0 right-0 w-full z-10 bg-green-600 dark:bg-green-900 ${isOnTop && is_homepage ? 'lg:bg-green-600/70 lg:dark:bg-green-900/70' : ''} `}>
             <nav aria-label="Global" className="mx-auto lg:text-lg/6 flex xxl:max-w-7xl items-center justify-between p-4 lg:px-12">
                 <NavLink to={'/'} className="-m-1.5 p-1.5">
                     <div className='flex'>

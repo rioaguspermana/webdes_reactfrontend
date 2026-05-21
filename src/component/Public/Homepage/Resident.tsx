@@ -1,14 +1,10 @@
+import { useHomepageStore } from "@/store/useHomepageSettingStore";
 import { ArrowRightIcon } from "flowbite-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
-const resident: HomeSection = {
-    title: "Data Penduduk",
-    subtitle: "Sistem digital yang berfungsi mempermudah pengelolaan data dan informasi terkait dengan kependudukan dan pendayagunaannya untuk pelayanan publik yang efektif dan efisien."
-}
-
-// 1. Data Kependudukan Desa Kersik sesuai request Anda
+// 1. Data Kependudukan Desa Sejahtera sesuai request Anda
 const dataSesuaiGender = [
     { name: "Jumlah Laki-laki", value: 1284, color: "bg-blue-500", hex: "#3b82f6" },
     { name: "Jumlah Perempuan", value: 1202, color: "bg-pink-500", hex: "#ec4899" },
@@ -31,11 +27,17 @@ const semuaLegenda = [
 
 function ResidentComponent() {
     const [, setActiveIndex] = useState<number | null>(null);
+    const { homepageSetting } = useHomepageStore();
+
+    const resident = {
+        title: homepageSetting?.kependudukan_title,
+        subtitle: homepageSetting?.kependudukan_subtitle
+    }
 
     return (
         <div className="w-full">
             <div className="bg-white py-16 sm:py-48 dark:bg-green-700">
-                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                <div className="mx-auto max-w-6xl px-6 lg:px-8">
                     <div className="w-full">
                         <div className="w-full lg:flex-auto text-center lg:text-left">
                             <h2 className="text-xl lg:text-4xl font-semibold tracking-tight text-pretty text-green-900 sm:text-5xl dark:text-white">

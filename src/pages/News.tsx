@@ -97,7 +97,7 @@ function News() {
         <div>
             <HeaderComponent is_homepage={false} />
             <div className="mt-24 bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8 dark:bg-green-700 transition-colors duration-200">
-                <div className="max-w-5xl mx-auto space-y-8">
+                <div className="max-w-6xl mx-auto space-y-8">
 
                     {/* === HEADER HALAMAN === */}
                     <div className="text-center border-b border-gray-200 dark:border-green-800 pb-6">

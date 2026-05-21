@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, GeoJSON, LayersControl, Popup, CircleMarker, useMap } from 'react-leaflet';
 // Perubahan Impor: Versi 3.0.0 menggunakan default export untuk MarkerClusterGroup
 import MarkerClusterGroup from 'react-leaflet-cluster';
@@ -251,14 +251,69 @@ function CustomMapControl() {
 }
 
 function VillageMapComponent(): React.JSX.Element {
-    const { homepageSetting } = useHomepageStore();
     const { profilDesa } = useProfileStore();
+    const { homepageSetting, updateFieldDinamic } = useHomepageStore();
+    const [editTitle, setEditTitle] = useState<boolean>(false);
+    const [editSubtitle, setEditSubtitle] = useState<boolean>(false);
+    const [localTitle, setLocalTitle] = useState<string>(homepageSetting?.map_title ?? '');
+    const [localSubtitle, setLocalSubtitle] = useState<string>(homepageSetting?.map_subtitle ?? '');
+    const titleFormRef = useRef<HTMLDivElement>(null);
+    const subtitleFormRef = useRef<HTMLDivElement>(null);
 
-    const villageMap = {
-        title: homepageSetting?.map_title,
-        subtitle: homepageSetting?.map_subtitle,
-        map_label: profilDesa?.nama_desa
-    }
+    useEffect(() => {
+        if (homepageSetting) {
+            setLocalTitle(homepageSetting.map_title ?? '');
+            setLocalSubtitle(homepageSetting.map_subtitle ?? '');
+        }
+    }, [homepageSetting]);
+
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent | TouchEvent | PointerEvent) => {
+            if (editTitle && titleFormRef.current && !titleFormRef.current.contains(event.target as Node)) {
+                cancelField("map_title"); // Otomatis batal edit judul
+            }
+            if (editSubtitle && subtitleFormRef.current && !subtitleFormRef.current.contains(event.target as Node)) {
+                cancelField("map_subtitle"); // Otomatis batal edit judul
+            }
+        };
+
+        // Daftarkan event listener klik global ke dokumen peramban
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('touchstart', handleClickOutside);
+
+        // Bersihkan event listener saat komponen dilepas (unmount) agar tidak bocor memori
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('touchstart', handleClickOutside);
+        };
+    }, [editTitle]);
+
+    const saveField = async (field: 'map_title' | 'map_subtitle') => {
+        try {
+            if (field === 'map_title') {
+                await updateFieldDinamic(field, localTitle);
+                setEditTitle(false)
+            } else if (field === 'map_subtitle') {
+                await updateFieldDinamic(field, localSubtitle);
+                setEditSubtitle(false)
+            }
+        } catch (err) {
+            alert("Gagal menyimpan perubahan!");
+        }
+    };
+
+    const cancelField = (field: 'map_title' | 'map_subtitle') => {
+        if (homepageSetting) {
+            if (field === 'map_title') {
+                setLocalTitle(homepageSetting.map_title);
+                setEditTitle(false)
+            } else if (field === 'map_subtitle') {
+                setLocalSubtitle(homepageSetting.map_subtitle);
+                setEditSubtitle(false)
+            }
+        }
+    };
 
     const posisiPusat: LatLngExpression = [-7.400, 106.562];
 
@@ -319,11 +374,114 @@ function VillageMapComponent(): React.JSX.Element {
             <div className="bg-white py-16 sm:py-40 dark:bg-green-700">
                 <div className="mx-auto max-w-6xl px-6 lg:px-8">
                     <div className="w-full lg:flex-auto text-center lg:text-left">
-                        <h2 className="text-xl lg:text-4xl font-semibold tracking-tight text-pretty text-green-900 sm:text-5xl dark:text-white">
-                            {villageMap.title}
-                        </h2>
-                        <div className="my-2 text-gray-600 dark:text-gray-300">
-                            <div className="text-base lg:text-xl">{villageMap.subtitle}</div>
+                        <div className="relative group/title">
+                            {editTitle ? (
+                                /* MODE EDIT: INPUT JUDUL */
+                                <div ref={titleFormRef} className="flex items-center gap-3 w-full border-b border-indigo-500 bg-indigo-50/30 dark:bg-zinc-800/50 px-2 py-1 rounded-t">
+                                    <input
+                                        type="text"
+                                        value={localTitle}
+                                        placeholder={localTitle}
+                                        onChange={(e) => setLocalTitle(e.target.value)}
+                                        className="w-full text-xl lg:text-4xl font-semibold text-teal-950 dark:text-white bg-transparent focus:outline-none tracking-tight"
+                                        autoFocus
+                                    />
+                                    {/* TOMBOL AKSI INLINE */}
+                                    <div className="flex gap-1 shrink-0">
+                                        <button
+                                            onClick={() => saveField('map_title')}
+                                            disabled={false}//isloading
+                                            title="Simpan"
+                                            className="p-1 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 rounded transition-colors cursor-pointer"
+                                        >
+                                            <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-5">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                                            </svg>
+                                        </button>
+                                        <button
+                                            onClick={() => cancelField('map_title')}
+                                            title="Batal"
+                                            className="p-1 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded transition-colors cursor-pointer"
+                                        >
+                                            <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-5">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                /* MODE LIHAT: TAMPILAN TEXT + EFEK HOVER TRANSPARAN */
+                                <div
+                                    onClick={() => setEditTitle(true)}
+                                    className={`inline-flex items-baseline gap-3 group rounded transition-all duration-200 ${true ? 'hover:opacity-65 hover:bg-gray-50 dark:hover:bg-zinc-800/30 cursor-text select-none' : ''}`}
+                                >
+                                    <h2 className="text-xl lg:text-4xl font-semibold text-teal-950 dark:text-white tracking-tight leading-tight flex-1">
+                                        {localTitle}
+                                    </h2>
+                                    {/* IKON PENSIL DI UJUNG TEXT */}
+                                    {true && (
+                                        <span className="absolute lg:relative right-0 text-gray-300 dark:text-zinc-600 group-hover/title:text-indigo-500 p-1 transition-colors shrink-0 pt-2">
+                                            <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                                            </svg>
+                                        </span>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                        <div className="relative group/sub">
+                            {editSubtitle ? (
+                                /* MODE EDIT: TEXTAREA SUBJUDUL */
+                                <div ref={subtitleFormRef} className="flex items-start gap-3 w-full border-b border-indigo-500 bg-indigo-50/30 dark:bg-zinc-800/50 px-2 py-1 rounded-t">
+                                    <textarea
+                                        value={localSubtitle}
+                                        onChange={(e) => setLocalSubtitle(e.target.value)}
+                                        rows={2}
+                                        className="w-full my-2 text-base lg:text-xl text-gray-600 dark:text-gray-300 bg-transparent focus:outline-none"
+                                        autoFocus
+                                    />
+                                    {/* TOMBOL AKSI INLINE */}
+                                    <div className="flex gap-1 shrink-0 pt-1">
+                                        <button
+                                            onClick={() => saveField('map_subtitle')}
+                                            disabled={false}//isloading
+                                            title="Simpan"
+                                            className="p-1 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 rounded transition-colors cursor-pointer"
+                                        >
+                                            <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-5">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                                            </svg>
+                                        </button>
+                                        <button
+                                            onClick={() => cancelField('map_subtitle')}
+                                            title="Batal"
+                                            className="p-1 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded transition-colors cursor-pointer"
+                                        >
+                                            <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-4.5">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                /* MODE LIHAT: TAMPILAN TEXT SUBJUDUL + EFEK HOVER */
+                                <div
+                                    onClick={() => setEditSubtitle(true)}
+                                    className={`flex items-start gap-3 w-full group rounded transition-all duration-200 ${true ? 'hover:opacity-65 hover:bg-gray-50 dark:hover:bg-zinc-800/30 cursor-text select-none' : ''}`}
+                                >
+                                    <p className="my-2 text-base lg:text-xl text-gray-600 dark:text-gray-300">
+                                        {localSubtitle}
+                                    </p>
+                                    {/* IKON PENSIL DI UJUNG TEXT SUBJUDUL */}
+                                    {true && (
+                                        <span className="absolute right-0 lg:relative text-gray-300 dark:text-zinc-700 group-hover/sub:text-indigo-500 p-1 transition-colors shrink-0">
+                                            <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-3.5">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                                            </svg>
+                                        </span>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className='mx-auto max-w-7xl w-full h-140 lg:h-160 rounded-xl overflow-hidden isolate relative'>
@@ -333,8 +491,8 @@ function VillageMapComponent(): React.JSX.Element {
                             className="z-0 w-full h-full bg-white"
                             scrollWheelZoom={false}
                         >
-                            <JudulPeta teks={`Geospasial ${villageMap.map_label ?? ''}`} />
-                            {villageMap.map_label &&
+                            <JudulPeta teks={`Geospasial ${profilDesa?.nama_desa ?? ''}`} />
+                            {profilDesa?.nama_desa &&
                                 <LayersControl position="topright">
                                     {/* Pilihan Basemap: Google Satellite Hybrid */}
                                     <LayersControl.BaseLayer checked name="Google Satellite Hybrid">

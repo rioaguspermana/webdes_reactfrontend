@@ -1,3 +1,8 @@
+import { useEffect } from "react";
+import { useCarouselStore } from "@/store/useCarouselStore";
+import { useHomepageStore } from "@/store/useHomepageSettingStore";
+import { useProfileStore } from "@/store/useProfilDesa";
+
 // Components
 import CarouselComponent from "@/component/Public/Homepage/Carousel";
 import HeaderComponent from "@/component/Public/Header";
@@ -15,6 +20,16 @@ import GaleryComponent from "@/component/Public/Homepage/Galery";
 import FooterComponent from "@/component/Public/Footer";
 
 function Homepage() {
+    // Ambil state dan actions dari Zustand Store global
+    const { fetchPublicProfilDesa } = useProfileStore();
+    const { fetchPublicCarousels } = useCarouselStore();
+    const { fetchPublicHomepageSetting } = useHomepageStore();
+
+    useEffect(() => {
+        fetchPublicProfilDesa()
+        fetchPublicCarousels();
+        fetchPublicHomepageSetting()
+    }, []);
 
     return (
         <div>

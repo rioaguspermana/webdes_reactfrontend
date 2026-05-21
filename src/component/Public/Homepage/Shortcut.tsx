@@ -1,11 +1,7 @@
 import { Link } from "react-router-dom";
 import { cleanFileUrl } from "@/@utils/cleanFileUrl";
 import { classMerge } from "@/@utils/classMerge";
-
-const shortcut: HomeSection = {
-    title: "Jelajahi Desa",
-    post_content: "Melalui website ini Anda dapat menjelajahi segala hal yang terkait dengan Desa. Aspek pemerintahan, Penduduk, Demografi, Potensi Desa, dan juga berita tentang Desa.",
-}
+import { useHomepageStore } from "@/store/useHomepageSettingStore";
 
 const largeScreenShortcuts = [
     { name: 'Profil Desa', href: 'profil-desa', icon: 'icon_profil_desa.png' },
@@ -29,11 +25,16 @@ const smallScreenShortcuts = [
 ]
 
 function ShortcutComponent() {
+    const { homepageSetting } = useHomepageStore();
+    const shortcut = {
+        title: homepageSetting?.shortcut_title,
+        post_content: homepageSetting?.shortcut_subtitle
+    }
 
     return (
         <div className="w-full" >
             <div className="bg-white py-16 sm:py-48 dark:bg-green-700">
-                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                <div className="mx-auto max-w-6xl px-6 lg:px-8">
                     {/** For large screen */}
                     <div className="hidden lg:grid grid-cols-1 items-center gap-x-8 gap-y-16 lg:grid-cols-2">
                         <div className="mx-auto w-full max-w-xl lg:mx-0">

@@ -1,16 +1,12 @@
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { cleanFileUrl } from "../../../@utils/cleanFileUrl";
+import { useHomepageStore } from "@/store/useHomepageSettingStore";
 
 interface Sotk {
     name: string;
     role: string;
     image: string;
-}
-
-const organizationStructure: HomeSection = {
-    title: "SOTK",
-    subtitle: "Struktur Organisasi dan Tata Kerja Desa Sejahtera"
 }
 
 const people: Sotk[] = [
@@ -29,10 +25,17 @@ const people: Sotk[] = [
 ]
 
 function OrganizationStructureComponent(): React.JSX.Element {
+    const { homepageSetting } = useHomepageStore();
+
+    const organizationStructure = {
+        title: homepageSetting?.sotk_title,
+        subtitle: homepageSetting?.sotk_subtitle
+    }
+
     return (
         <div className="w-full">
             <div className="bg-white py-16 sm:py-48 dark:bg-green-700">
-                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                <div className="mx-auto max-w-6xl px-6 lg:px-8">
                     <div className="w-full lg:flex-auto text-center lg:text-left">
                         <h2 className="text-xl lg:text-4xl font-semibold tracking-tight text-pretty text-green-900 sm:text-5xl dark:text-white">
                             {organizationStructure.title}

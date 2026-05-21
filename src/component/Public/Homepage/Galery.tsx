@@ -79,7 +79,7 @@ function GaleryComponent() {
     return (
         <div className="w-full">
             <div className="bg-white py-16 sm:py-24 dark:bg-green-700">
-                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                <div className="mx-auto max-w-6xl px-6 lg:px-8">
                     <div className="overflow-hidden">
                         <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
                             <div className="max-w-xl text-center lg:text-left">

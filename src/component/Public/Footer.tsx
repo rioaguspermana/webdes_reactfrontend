@@ -74,8 +74,8 @@ function FooterComponent() {
     const profilDesa = useProfileStore((state) => state.profilDesa);
 
     const [contact, setContact] = useState<ContactNavigation[]>([
-        { name: '☎ 0821-1234-5678', href: '#' },
-        { name: '📧 desasejahtera@gmail.com', href: '#' }
+        { name: '☎', href: '#' },
+        { name: '📧', href: '#' }
     ]);
 
     useEffect(() => {

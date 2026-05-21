@@ -1,11 +1,7 @@
+import { useHomepageStore } from "@/store/useHomepageSettingStore";
 import { ArrowRightIcon } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-
-const resident: HomeSection = {
-    title: "APB Desa",
-    subtitle: "Akses cepat dan transparan terhadap APB Desa serta proyek pembangunan."
-}
 
 // Data Contoh pendapatan vs belanja Belanja Desa
 const dataAPBDesa = [
@@ -18,18 +14,24 @@ const dataAPBDesa = [
 function VillageBudgetComponent() {
     // Fungsi pemformat angka rupiah singkat (Juta)
     const formatRupiahSingkat = (value: number) => `${value} Jt`;
+    const { homepageSetting } = useHomepageStore();
+
+    const apbdesa: HomeSection = {
+        title: homepageSetting?.apbdesa_title ?? "",
+        subtitle: homepageSetting?.apbdesa_subtitle
+    }
 
     return (
         <div className="w-full">
             <div className="bg-white py-16 sm:py-48 dark:bg-green-700">
-                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                <div className="mx-auto max-w-6xl px-6 lg:px-8">
                     <div className="w-full">
                         <div className="w-full lg:flex-auto text-center lg:text-left">
                             <h2 className="text-xl lg:text-4xl font-semibold tracking-tight text-pretty text-green-900 sm:text-5xl dark:text-white">
-                                {resident.title}
+                                {apbdesa.title}
                             </h2>
                             <div className="my-2 text-gray-600 dark:text-gray-300">
-                                <div className="text-base lg:text-xl">{resident.subtitle}</div>
+                                <div className="text-base lg:text-xl">{apbdesa.subtitle}</div>
                             </div>
                         </div>
                         <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-8">
@@ -101,7 +103,7 @@ function VillageBudgetComponent() {
                             </div>
                         </div>
                         <div className="mt-10 lg:mt-14 flex items-center justify-center gap-x-6 lg:justify-end">
-                            <Link to="/infografis/apb" className="font-semibold text-blue-700 dark:text-blue-200 hover:underline">
+                            <Link to="/infografis/apbdes" className="font-semibold text-blue-700 dark:text-blue-200 hover:underline">
                                 <div className="flex items-center space-x-2">
                                     <div>Lihat Data APB Desa Lebih lengkap{' '}</div>
                                     <ArrowRightIcon className="size-5" />

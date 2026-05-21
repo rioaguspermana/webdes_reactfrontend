@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { TextInput } from 'flowbite-react';
-import { formatPhoneNumber } from '@/@utils/formatPhoneNumber'; // Menggunakan fungsi utilitas pembersih nomor kita sebelumnya
+import { formatPhoneNumber } from '@/@utils/formatPhoneNumber';
 import HeaderComponent from '@/component/Public/Header';
 import FooterComponent from '@/component/Public/Footer';
 import { cleanFileUrl } from '@/@utils/cleanFileUrl';
@@ -34,7 +34,7 @@ function UmkmPage() {
         <div>
             <HeaderComponent is_homepage={false} />
             <div className="mt-24 bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8 dark:bg-green-700 transition-colors duration-200">
-                <div className="max-w-5xl mx-auto space-y-8">
+                <div className="max-w-6xl mx-auto space-y-8">
                     {/* === HEADER === */}
                     <div className="text-center border-b border-gray-200 dark:border-green-900 pb-6">
                         <h1 className="text-3xl font-semibold tracking-tight text-green-900 dark:text-white sm:text-4xl">

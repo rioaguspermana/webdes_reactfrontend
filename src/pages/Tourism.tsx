@@ -1,10 +1,11 @@
 import { dataWisata, tourism } from '@/@types/tourism';
 import { cleanFileUrl } from '@/@utils/cleanFileUrl'
-import { ArrowRightIcon } from 'flowbite-react';
+import FooterComponent from '@/component/Public/Footer';
+import HeaderComponent from '@/component/Public/Header';
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 
-const TourismComponent = () => {
+
+const TourismDestination = () => {
     const baseUrl = import.meta.env.VITE_APP_URL;
 
     const [activeCategory, setActiveCategory] = useState<string>("Semua");
@@ -28,8 +29,9 @@ const TourismComponent = () => {
     }, [dataWisata, activeCategory]);
 
     return (
-        <div className="w-full">
-            <div className="bg-white py-16 sm:py-10 dark:bg-green-700">
+        <div>
+            <HeaderComponent is_homepage={false} />
+            <div className="mt-24 bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8 dark:bg-green-700 transition-colors duration-200">
                 <div className="mx-auto max-w-6xl px-6 lg:px-8">
                     <div className="relative bg-emerald-700 dark:bg-emerald-800 rounded-xl py-16 px-4 sm:px-6 lg:px-8 text-center text-white overflow-hidden">
                         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] bg-size-[16px_16px]"></div>
@@ -37,7 +39,7 @@ const TourismComponent = () => {
                             <span className="bg-emerald-600 text-emerald-200 text-xs font-semibold tracking-widest uppercase px-3 py-1 rounded-full">
                                 Eksplorasi Desa Wisata
                             </span >
-                            <h1 className="mt-3 text-3xl sm:text-4xl font-extrabold tracking-tight">
+                            <h1 className="mt-3 text-3xl sm:text-4xl font-bold tracking-tight">
                                 {tourism.title}
                             </h1>
                             <p className="mt-4 text-emerald-100 max-w-xl mx-auto leading-relaxed">
@@ -132,19 +134,12 @@ const TourismComponent = () => {
                             ))}
                         </div>
                     </div>
-                    <div className="mt-10 lg:mt-14 flex items-center justify-center gap-x-6 lg:justify-end">
-                        <Link to="/wisata" className="font-semibold text-blue-700 dark:text-blue-200 hover:underline">
-                            <div className="flex items-center space-x-2">
-                                <div>Lihat Wisata Desa Lainnya{' '}</div>
-                                <ArrowRightIcon className="size-5" />
-                            </div>
-                        </Link>
-                    </div>
                 </div>
             </div>
+            <FooterComponent />
         </div>
     );
 };
 
 
-export default TourismComponent;
+export default TourismDestination;

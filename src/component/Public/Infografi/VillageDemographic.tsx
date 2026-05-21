@@ -328,7 +328,6 @@ function VillageDemographicSubPage() {
                 </Card>
 
                 {/* Kanan: Box Terpisah Mayoritas Agama (1 Kolom) */}
-                {/* Kanan: Box Terpisah Mayoritas Agama (1 Kolom) */}
                 <div className="bg-white dark:bg-green-800 rounded-xl p-5 border border-gray-100 dark:border-gray-700 flex flex-col justify-between shadow-sm">
                     <div className="space-y-4">
                         <h4 className="text-xs font-semibold text-gray-400 dark:text-gray-300 uppercase tracking-wider">
@@ -355,7 +354,7 @@ function VillageDemographicSubPage() {
                                             <span className="text-2xl">{emoji}</span>
                                             <div>
                                                 <p className={`text-[10px] font-semibold uppercase tracking-wide ${labelColor}`}>
-                                                    Peringkat #{idx + 1}
+                                                    Terbanyak #{idx + 1}
                                                 </p>
                                                 <p className="text-lg font-bold text-gray-800 dark:text-gray-200 mt-0.5">
                                                     {agama.name}

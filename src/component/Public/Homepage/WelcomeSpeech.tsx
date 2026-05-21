@@ -1,14 +1,17 @@
-import { cleanFileUrl } from "../../../@utils/cleanFileUrl";
-
-const welcomeSpeech: HomeSection = {
-    title: "Sambutan Kepala Desa",
-    post_by: "Haryanto SE",
-    post_by_title: "Kepala Desa Sejahtera",
-    post_content: "Website ini hadir sebagai wujud transformasi desa Sejahtera menjadi desa yang mampu memanfaatkan teknologi informasi dan komunikasi, terintegrasi kedalam sistem online. Keterbukaan informasi publik, pelayanan publik dan kegiatan perekonomian di desa, guna mewujudkan desa Kersik sebagai desa wisata yang berkelanjutan, adaptasi dan mitigasi terhadap perubahan iklim serta menjadi desa yang mandiri. \n Terima kasih kepada semua pihak yang telah banyak memberi dukungan dan kontribusi baik berupa tenaga, pikiran dan semangat, sehingga website ini dapat terealisasi.",
-    image: "sambutan_kepala_desa.png"
-}
+import { cleanFileUrl } from "@/@utils/cleanFileUrl";
+import { useHomepageStore } from "@/store/useHomepageSettingStore";
 
 function WelcomeSpeechComponent() {
+    const { homepageSetting } = useHomepageStore();
+
+    const welcomeSpeech = {
+        title: homepageSetting?.sambutan_kepdes,
+        post_by: "Haryanto SE",
+        post_by_title: "Kepala Desa Sejahtera",
+        post_content: homepageSetting?.sambutan_kepdes_content,
+        image: homepageSetting?.sambutan_kepdes_image
+    }
+
     return (
         <div className="w-full" >
             <div className="bg-white py-16 sm:py-48 dark:bg-green-700">
