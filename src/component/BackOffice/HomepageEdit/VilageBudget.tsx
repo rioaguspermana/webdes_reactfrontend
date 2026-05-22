@@ -197,7 +197,7 @@ function VillageBudgetComponent() {
                         <div className="relative group/global">
                             <div className="absolute -inset-2 rounded-2xl flex items-center justify-center bg-transparent group-hover/global:bg-black/50 dark:group-hover/global:bg-white/5 transition-colors duration-200 z-15">
                                 <Link
-                                    to="/backoffice/infografis/apbdes" // Sesuaikan dengan link halaman manajemen berita Anda
+                                    to="/backoffice/infografis/apbdes"
                                     className="opacity-0 scale-95 group-hover/global:opacity-100 group-hover/global:scale-100 transition-all duration-200 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded shadow-lg flex items-center gap-2 border border-indigo-500/50 cursor-pointer"
                                 >
                                     {/* Ikon Pensil Sederhana */}
