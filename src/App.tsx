@@ -30,6 +30,7 @@ import ProfilDesaManager from './pages/BackOffice/VillageProfile';
 import Dashboard from './pages/BackOffice/Dashboard';
 import BackOffice from './pages/BackOffice';
 import HomepageEdit from './pages/BackOffice/HomepageEdit';
+import BackOfficeNotfound from './component/BackOffice/HomepageEdit/Notfound';
 
 function App() {
 
@@ -66,6 +67,7 @@ function App() {
 
             <Route path="profil-desa" element={<ProfilDesaManager />} />
             <Route path="homepage-edit" element={<HomepageEdit />} />
+            <Route path="*" element={<BackOfficeNotfound />} />
           </Route>
         </Route>
 
