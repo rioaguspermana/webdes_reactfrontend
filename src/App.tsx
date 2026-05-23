@@ -3,36 +3,52 @@
 import './App.css'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ProtectedRoute } from './component/ProtectedRoute';
+import { useHomepageStore } from './store/useHomepageSettingStore';
+import { useCarouselStore } from './store/useCarouselStore';
+import { useProfileStore } from './store/useProfilDesa';
+import { useEffect } from 'react';
 
 // Components
 import ScrollToTop from './component/Public/ScrollToTop';
 
 // Pages
-import Homepage from './pages/Homepage';
-import NotFound from './pages/Notfound';
-import Login from './pages/Login';
-import VillageProfile from './pages/VillageProfile';
-import Infographic from './pages/Infographic';
-import Map from './pages/Map';
-import News from './pages/News';
-import UmkmPage from './pages/Umkm';
+import Homepage from './pages/Public/Homepage';
+import NotFound from './pages/Public/Notfound';
+import Login from './pages/Public/Login';
+import VillageProfile from './pages/Public/VillageProfile';
+import Infographic from './pages/Public/Infographic';
+import Map from './pages/Public/Map';
+import News from './pages/Public/News';
+import UmkmPage from './pages/Public/Umkm';
 import VillageDemographicSubPage from './component/Public/Infografi/VillageDemographic';
 import ApbdesDesaSubPage from './component/Public/Infografi/Apbdes';
 import StuntingSubPage from './component/Public/Infografi/Stunting';
 import BansosSubPage from './component/Public/Infografi/Bansos';
 import IdmSubPage from './component/Public/Infografi/Idm';
 import SdgsSubPage from './component/Public/Infografi/Sdgs';
-import Ppid from './pages/Ppid';
-import Sotk from './pages/Sotk';
-import Potential from './pages/Potential';
-import TourismDestination from './pages/Tourism';
+import Ppid from './pages/Public/Ppid';
+import Sotk from './pages/Public/Sotk';
+import Potential from './pages/Public/Potential';
+import TourismDestination from './pages/Public/Tourism';
 import ProfilDesaManager from './pages/BackOffice/VillageProfile';
 import Dashboard from './pages/BackOffice/Dashboard';
-import BackOffice from './pages/BackOffice';
+import BackOffice from './pages/BackOffice/BackOffice';
 import HomepageEdit from './pages/BackOffice/HomepageEdit';
 import BackOfficeNotfound from './component/BackOffice/HomepageEdit/Notfound';
 
+
 function App() {
+  const { fetchPublicProfilDesa } = useProfileStore();
+  const { fetchPublicCarousels } = useCarouselStore();
+  const { fetchPublicHomepageSetting } = useHomepageStore();
+
+
+
+  useEffect(() => {
+    fetchPublicProfilDesa()
+    fetchPublicCarousels();
+    fetchPublicHomepageSetting()
+  }, []);
 
   return (
     <BrowserRouter>
@@ -40,7 +56,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Homepage />} />
         <Route path='/profil-desa' element={<VillageProfile />} />
-        <Route path="/infografis" element={<Infographic />}>
+        <Route path='/infografis' element={<Infographic />}>
           {/* Mengalihkan /infografis langsung menuju /infografis/penduduk secara otomatis */}
           <Route index element={<Navigate to="penduduk" replace />} />
 

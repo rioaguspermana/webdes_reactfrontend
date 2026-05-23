@@ -7,20 +7,8 @@ import ShortcutComponent from "@/component/BackOffice/HomepageEdit/Shortcut";
 import VillageBudgetComponent from "@/component/BackOffice/HomepageEdit/VilageBudget";
 import VillageMapComponent from "@/component/BackOffice/HomepageEdit/VillageMap";
 import WelcomeSpeechComponent from "@/component/BackOffice/HomepageEdit/WelcomeSpeech";
-import { useCarouselStore } from "@/store/useCarouselStore";
-import { useHomepageStore } from "@/store/useHomepageSettingStore";
-import { useEffect } from "react";
 
 function HomepageEdit() {
-    // Ambil state dan actions dari Zustand Store global
-    const { fetchCarousels } = useCarouselStore();
-    const { fetchHomepageSetting } = useHomepageStore();
-
-    useEffect(() => {
-        fetchCarousels();
-        fetchHomepageSetting()
-    }, []);
-
     return (
         <div className="grid grid-cols-1 gap-2">
             <div className="text-[70%] w-full border-2 border-dashed">

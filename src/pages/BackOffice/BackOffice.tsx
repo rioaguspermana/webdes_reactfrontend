@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
     Dialog,
     DialogBackdrop,
@@ -46,7 +46,6 @@ function BackOffice() {
     const [sidebarOpen, setSidebarOpen] = useState(false)
 
     const profilDesa = useProfileStore((state) => state.profilDesa);
-    const fetchProfilDesa = useProfileStore((state) => state.fetchProfilDesa);
     const { user, logout } = useAuthStore()
 
 
@@ -54,11 +53,6 @@ function BackOffice() {
         { name: 'Profile Anda', href: '#', icon: UserIcon },
         { name: 'Keluar', href: '#', icon: ArrowRightStartOnRectangleIcon, onClick: () => logout() },
     ]
-
-    // Fetch data Profil Desa
-    useEffect(() => {
-        fetchProfilDesa();
-    }, [fetchProfilDesa]);
 
     return (
         <>

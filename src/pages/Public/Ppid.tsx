@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Tabs, TabItem, TextInput } from 'flowbite-react';
 import type { KategoriPpid } from '@/@types/ppid';
-import HeaderComponent from '../component/Public/Header';
-import FooterComponent from '../component/Public/Footer';
+import HeaderComponent from '../../component/Public/Header';
+import FooterComponent from '../../component/Public/Footer';
 
 // Data simulasi dokumen PPID Desa berformat snake_case
 const dataPpidDesa: KategoriPpid[] = [

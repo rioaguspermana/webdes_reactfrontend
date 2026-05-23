@@ -7,14 +7,6 @@ import ThemeToggle from './ThemeToggle'
 import { useProfileStore } from '@/store/useProfilDesa'
 import FooterComponent from './Footer'
 
-
-const data_desa = {
-    nama: "Desa Sejahtera",
-    kecamatan: "Kecamatan Bahagia",
-    kabupaten: "Kabupaten Sentosa",
-    provinsi: "Provinsi Harmoni",
-}
-
 const navigation = [
     { name: 'Home', href: '/' },
     { name: 'Profil Desa', href: '/profil-desa' },
@@ -26,11 +18,10 @@ const navigation = [
 ]
 
 function HeaderComponent({ is_homepage }: { is_homepage?: boolean }) {
+    // Ambil state dan actions dari Zustand Store global
+    const { profilDesa } = useProfileStore();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [isOnTop, setIsOnTop] = useState(false);
-
-    // Use Zustand Store
-    const profilDesa = useProfileStore((state) => state.profilDesa);
 
     // Check Scroll
     useEffect(() => {
@@ -93,15 +84,15 @@ function HeaderComponent({ is_homepage }: { is_homepage?: boolean }) {
                         <div className="flex items-center justify-between">
                             <NavLink to={'/'} className="-m-1.5 p-1.5">
                                 <div className='flex'>
-                                    <span className="sr-only">{data_desa.nama}</span>
+                                    <span className="sr-only">{profilDesa?.nama_desa}</span>
                                     <img
                                         alt=""
                                         src={cleanFileUrl(`${import.meta.env.VITE_APP_URL}/image/`, profilDesa?.logo_desa ?? "")}
                                         className="h-16 w-auto"
                                     />
                                     <div className='content-center px-4'>
-                                        <div className='text-white font-semibold'>{data_desa.nama}</div>
-                                        <div className='text-white'>{data_desa.kabupaten}</div>
+                                        <div className='text-white font-semibold'>{profilDesa?.nama_desa}</div>
+                                        <div className='text-white'>{profilDesa?.kabupaten_kota}</div>
                                     </div>
                                 </div>
                             </NavLink>
