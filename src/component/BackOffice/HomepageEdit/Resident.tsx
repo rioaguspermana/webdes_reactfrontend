@@ -1,3 +1,4 @@
+import { useAlertStore } from "@/store/useAlertStore";
 import { useHomepageStore } from "@/store/useHomepageSettingStore";
 import { ArrowRightIcon } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
@@ -25,6 +26,7 @@ const semuaLegenda = [
 
 
 function ResidentComponent() {
+    const { showAlert } = useAlertStore()
     const [, setActiveIndex] = useState<number | null>(null);
     const { homepageSetting, updateFieldDinamic } = useHomepageStore();
     const [editTitle, setEditTitle] = useState<boolean>(false);
@@ -73,7 +75,7 @@ function ResidentComponent() {
                 setEditSubtitle(false)
             }
         } catch (err) {
-            alert("Gagal menyimpan perubahan!");
+            showAlert("Gagal menyimpan perubahan!", 'error', 3000);
         }
     };
 

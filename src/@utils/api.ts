@@ -1,4 +1,4 @@
-import axios, { InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 // Buat instance khusus dengan konfigurasi dasar
 const api = axios.create({
@@ -21,6 +21,24 @@ api.interceptors.request.use(
         return config;
     },
     (error) => {
+        return Promise.reject(error);
+    }
+);
+
+api.interceptors.response.use(
+    (response: AxiosResponse) => {
+        // Jika request sukses, langsung teruskan responnya
+        return response;
+    },
+    (error: AxiosError) => {
+        // Jika backend Golang mengembalikan status 401 (Unauthorized)
+        if (error.response && error.response.status === 401) {
+            // Paksa browser pindah ke halaman login
+            window.location.href = '/login';
+
+            return new Promise(() => { });
+        }
+
         return Promise.reject(error);
     }
 );

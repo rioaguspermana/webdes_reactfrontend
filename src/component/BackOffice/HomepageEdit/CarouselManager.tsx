@@ -1,13 +1,15 @@
 import { CarouselItem } from '@/@types/carousel';
 import { cleanFileUrl } from '@/@utils/cleanFileUrl';
+import { useAlertStore } from '@/store/useAlertStore';
 import { useCarouselStore } from '@/store/useCarouselStore';
-import { useUiStore } from '@/store/useHomepageEditStore';
+import { useHomepageStore } from '@/store/useHomepageSettingStore';
 import React, { useState, useRef, useEffect } from 'react';
 
 export default function CarouselManager() {
+    const { showAlert } = useAlertStore()
     // Ambil state dan actions dari Zustand Store global
     const { carousels, createCarousel, error, updateCarousel, deleteCarousel, isLoading, successMessage } = useCarouselStore();
-    const { isManagerOpen, closeManager } = useUiStore();
+    const { isManagerOpen, closeManager } = useHomepageStore();
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
@@ -87,26 +89,27 @@ export default function CarouselManager() {
         try {
             if (isEditMode && selectedId) {
                 await updateCarousel(selectedId, submitData);
-                console.log("Acsacascasc")
             } else {
                 await createCarousel(submitData);
             }
             closeModal();
-        } catch (err) {
-            // Error logging sudah ditangani di dalam Zustand store
+            showAlert('Berhasil memperbarui banner', 'success', 3000);
+        } catch (err: any) {
+            showAlert(err.response?.data?.message || 'Gagal menghapus banner', 'error', 3000);
         }
     };
 
     return (
         <>
-            <dialog
-                ref={managerDialogRef}
-                onClose={closeManager}
-                className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 backdrop:bg-black/40 backdrop:backdrop-blur-xs rounded-xl p-6 bg-white dark:bg-zinc-900 text-gray-900 dark:text-white w-full max-w-5xl border border-gray-200 dark:border-zinc-800 shadow-2xl focus:outline-none m-0 text-sm"
+            <div
+                className={`${isManagerOpen ? 'block' : 'hidden'} fixed inset-0 z-60 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4`}
+                onClick={closeManager}
             >
-                <div className="border-b border-gray-200 dark:border-zinc-800 pb-4 mb-4">
-                    {/* HEADER SEKSION (Meniru Judul Utama Gambar Contoh) */}
-                    <div className="border-b border-gray-200 dark:border-zinc-800 pb-4 mb-4 flex items-center justify-between">
+                <div
+                    onClick={(e) => e.stopPropagation()}
+                    className="w-full max-w-5xl rounded-xl p-6 bg-white dark:bg-zinc-900 text-gray-900 dark:text-white border border-gray-200 dark:border-zinc-800 shadow-2xl text-sm max-h-[90vh] flex flex-col"
+                >
+                    <div className="border-b border-gray-200 dark:border-zinc-800 pb-4 mb-4 flex items-center justify-between shrink-0">
                         <div>
                             <h2 className="text-lg font-bold tracking-tight">Manajemen Slide Banner</h2>
                             <p className="text-xs text-gray-500">Urutkan dan kelola gambar tampilan spanduk utama halaman depan.</p>
@@ -120,9 +123,7 @@ export default function CarouselManager() {
                             </button>
                         </div>
                     </div>
-
-                    {/* LIST KARTU MINI CAROUSEL */}
-                    <div className="space-y-4 lg:h-108 overflow-y-auto pr-1">
+                    <div className="space-y-4 overflow-y-auto pr-1 flex-1">
                         {carousels.length === 0 ? (
                             <p className="text-sm text-center py-12 text-gray-400 border border-dashed border-gray-200 dark:border-zinc-800 rounded-lg">Belum ada slide banner tersedia.</p>
                         ) : (
@@ -148,9 +149,8 @@ export default function CarouselManager() {
                         )}
                     </div>
                 </div>
-            </dialog>
+            </div>
 
-            {/* DIALOG FORM POP-UP MODAL (Meniru Form Bergaris Gaya Identitas Desa) */}
             <dialog
                 ref={dialogRef}
                 className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 backdrop:bg-black/40 backdrop:backdrop-blur-xs rounded-xl p-7 bg-white dark:bg-zinc-900 text-gray-900 dark:text-white w-full max-w-lg border border-gray-200 dark:border-zinc-800 shadow-xl focus:outline-none m-0 animate-fade-in"
@@ -167,7 +167,6 @@ export default function CarouselManager() {
                 {successMessage && <div className="p-3 text-xs font-semibold text-green-700 bg-green-50 border rounded-xl dark:bg-green-950/40 dark:text-green-300">✅ {successMessage}</div>}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* SEKSION FORM I: INFORMASI UTAMA */}
                     <div className="space-y-4">
                         <div>
                             <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1.5">Judul Banner</label>
@@ -196,7 +195,6 @@ export default function CarouselManager() {
                         </div>
                     </div>
 
-                    {/* SEKSION FORM II: PENGATURAN TEKNIS & URUTAN */}
                     <div className="border-t border-gray-200 dark:border-zinc-800 pt-5 grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1.5">Alt Gambar (Keterangan SEO)</label>
@@ -224,7 +222,6 @@ export default function CarouselManager() {
                         </div>
                     </div>
 
-                    {/* SEKSION FORM III: MEDIA & DOKUMEN */}
                     <div className="border-t border-gray-200 dark:border-zinc-800 pt-5">
                         <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1.5">Berkas Gambar Banner (Maks 2MB)</label>
                         <input
@@ -245,7 +242,6 @@ export default function CarouselManager() {
                         )}
                     </div>
 
-                    {/* STATUS PENAYANGAN */}
                     <div className="flex items-center gap-2.5 pt-1">
                         <input
                             type="checkbox"
@@ -260,7 +256,6 @@ export default function CarouselManager() {
                         </label>
                     </div>
 
-                    {/* TOMBOL AKSI PENGONTROL */}
                     <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-zinc-800">
                         <button
                             type="button"

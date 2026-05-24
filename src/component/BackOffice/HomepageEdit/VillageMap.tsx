@@ -11,6 +11,7 @@ import { GeoSearchControl } from 'leaflet-geosearch';
 import { dataBatasDesa, dataPetakLahan, dataJalanDesa } from '../../../data/VilllageMapData';
 import { useHomepageStore } from '@/store/useHomepageSettingStore';
 import { useProfileStore } from '@/store/useProfilDesa';
+import { useAlertStore } from '@/store/useAlertStore';
 
 interface JudulPetaProps {
     teks: string;
@@ -251,6 +252,7 @@ function CustomMapControl() {
 }
 
 function VillageMapComponent(): React.JSX.Element {
+    const { showAlert } = useAlertStore()
     const { profilDesa } = useProfileStore();
     const { homepageSetting, updateFieldDinamic } = useHomepageStore();
     const [editTitle, setEditTitle] = useState<boolean>(false);
@@ -299,7 +301,7 @@ function VillageMapComponent(): React.JSX.Element {
                 setEditSubtitle(false)
             }
         } catch (err) {
-            alert("Gagal menyimpan perubahan!");
+            showAlert("Gagal menyimpan perubahan!", 'error', 3000);
         }
     };
 

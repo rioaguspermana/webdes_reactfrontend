@@ -11,6 +11,10 @@ body,
   width: 100%;
 }
 
+dialog::backdrop {
+  z-index: 10; /* lebih rendah dari alert */
+}
+
 /* Spesific element */
 .link-neumorphism {
   border-radius: 6px;

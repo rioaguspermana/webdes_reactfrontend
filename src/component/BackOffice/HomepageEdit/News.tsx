@@ -3,6 +3,7 @@ import { cleanFileUrl } from "@/@utils/cleanFileUrl";
 import { ArrowRightIcon } from "flowbite-react";
 import { useHomepageStore } from "@/store/useHomepageSettingStore";
 import { useState, useRef, useEffect } from "react";
+import { useAlertStore } from "@/store/useAlertStore";
 
 const posts = [
     {
@@ -56,6 +57,7 @@ const posts = [
 ]
 
 function NewsComponent() {
+    const { showAlert } = useAlertStore()
     const { homepageSetting, updateFieldDinamic } = useHomepageStore();
     const [editTitle, setEditTitle] = useState<boolean>(false);
     const [editSubtitle, setEditSubtitle] = useState<boolean>(false);
@@ -103,7 +105,7 @@ function NewsComponent() {
                 setEditSubtitle(false)
             }
         } catch (err) {
-            alert("Gagal menyimpan perubahan!");
+            showAlert("Gagal menyimpan perubahan!", 'error', 3000);
         }
     };
 

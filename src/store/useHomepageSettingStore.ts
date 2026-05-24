@@ -2,26 +2,36 @@ import { HomepageSetting } from '@/@types/homepage_setting';
 import api from '@/@utils/api';
 import axios from 'axios';
 import { create } from 'zustand';
+import { useAlertStore } from './useAlertStore';
 
 interface HomepageState {
     homepageSetting: HomepageSetting | null;
     isLoading: boolean;
     isSaving: boolean;
     error: string | null;
+    isManagerOpen: boolean;
 
     // Actions
+    openManager: () => void;
+    closeManager: () => void;
     fetchPublicHomepageSetting: () => Promise<void>;
     fetchHomepageSetting: () => Promise<void>;
     updateFieldDinamic: (key: keyof Omit<HomepageSetting, 'id' | 'sambutan_kepdes_image'>, value: string) => Promise<void>;
     uploadImage: (file: File) => Promise<string | null>;
 }
 
+interface UiState {
+}
+
 export const useHomepageStore = create<HomepageState>((set) => ({
+    isManagerOpen: false,
     homepageSetting: null,
     isLoading: false,
     isSaving: false,
     error: null,
 
+    openManager: () => set({ isManagerOpen: true }),
+    closeManager: () => set({ isManagerOpen: false }),
     // 1. AMBIL SELURUH DATA HOMEPAGE (GET)
     fetchPublicHomepageSetting: async () => {
         set({ isLoading: true, error: null });
@@ -72,7 +82,6 @@ export const useHomepageStore = create<HomepageState>((set) => ({
                 });
             }
         } catch (err: any) {
-            alert(err.response?.data?.message || 'Gagal menyimpan perubahan teks');
             throw err;
         } finally {
             set({ isSaving: false });
@@ -81,6 +90,7 @@ export const useHomepageStore = create<HomepageState>((set) => ({
 
     // 3. UPLOAD GAMBAR SAMBUTAN KEPDES (MULTIPART FORM-DATA)
     uploadImage: async (file: File) => {
+        const { showAlert } = useAlertStore()
         set({ isSaving: true });
         const formData = new FormData();
         formData.append('sambutan_kepdes_image', file);
@@ -111,7 +121,7 @@ export const useHomepageStore = create<HomepageState>((set) => ({
             }
             return null;
         } catch (err: any) {
-            alert(err.response?.data?.message || 'Gagal mengunggah foto Kepala Desa');
+            showAlert(err.response?.data?.message || 'Gagal mengunggah foto', 'error', 3000);
             return null;
         } finally {
             set({ isSaving: false });

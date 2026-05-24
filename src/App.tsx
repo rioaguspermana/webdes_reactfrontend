@@ -42,8 +42,6 @@ function App() {
   const { fetchPublicCarousels } = useCarouselStore();
   const { fetchPublicHomepageSetting } = useHomepageStore();
 
-
-
   useEffect(() => {
     fetchPublicProfilDesa()
     fetchPublicCarousels();

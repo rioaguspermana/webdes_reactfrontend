@@ -67,7 +67,7 @@ function WelcomeSpeechComponent() {
                 setEditContent(false);
             }
         } catch (err) {
-            alert("Gagal menyimpan perubahan!");
+            showAlert("Gagal menyimpan perubahan!", 'error', 3000);
         }
     };
 
@@ -89,7 +89,7 @@ function WelcomeSpeechComponent() {
 
             // Validasi ukuran maksimal file (2 MB) di sisi client
             if (file.size > 1 << 20) {
-                alert("Ukuran berkas terlalu besar! Maksimal ukuran foto adalah 2 MB.");
+                showAlert("Ukuran berkas terlalu besar! Maksimal ukuran foto adalah 2 MB.", 'error', 3000);
                 return;
             }
 

@@ -1,3 +1,4 @@
+import { useAlertStore } from "@/store/useAlertStore";
 import { useHomepageStore } from "@/store/useHomepageSettingStore";
 import { ArrowRightIcon } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
@@ -13,6 +14,7 @@ const dataAPBDesa = [
 
 
 function VillageBudgetComponent() {
+    const { showAlert } = useAlertStore()
     // Fungsi pemformat angka rupiah singkat (Juta)
     const formatRupiahSingkat = (value: number) => `${value} Jt`;
     const { homepageSetting, updateFieldDinamic } = useHomepageStore();
@@ -62,7 +64,7 @@ function VillageBudgetComponent() {
                 setEditSubtitle(false)
             }
         } catch (err) {
-            alert("Gagal menyimpan perubahan!");
+            showAlert("Gagal menyimpan perubahan!", 'error', 3000);
         }
     };
 

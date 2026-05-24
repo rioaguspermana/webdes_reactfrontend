@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { cleanFileUrl } from "../../../@utils/cleanFileUrl";
 import { useEffect, useRef, useState } from "react";
 import { useHomepageStore } from "@/store/useHomepageSettingStore";
+import { useAlertStore } from "@/store/useAlertStore";
 
 interface Sotk {
     name: string;
@@ -26,6 +27,7 @@ const people: Sotk[] = [
 ]
 
 function OrganizationStructureComponent(): React.JSX.Element {
+    const { showAlert } = useAlertStore()
     const { homepageSetting, updateFieldDinamic } = useHomepageStore();
     const [editTitle, setEditTitle] = useState<boolean>(false);
     const [editSubtitle, setEditSubtitle] = useState<boolean>(false);
@@ -73,7 +75,7 @@ function OrganizationStructureComponent(): React.JSX.Element {
                 setEditSubtitle(false)
             }
         } catch (err) {
-            alert("Gagal menyimpan perubahan!");
+            showAlert("Gagal menyimpan perubahan!", 'error', 3000);
         }
     };
 

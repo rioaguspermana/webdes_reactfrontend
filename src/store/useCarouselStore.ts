@@ -101,7 +101,8 @@ export const useCarouselStore = create<CarouselState>((set, get) => ({
                 carousels: state.carousels.filter((item) => item.id !== id)
             }));
         } catch (err: any) {
-            alert(err.response?.data?.message || 'Gagal menghapus banner');
+            set({ error: err.response?.data?.message || 'Gagal menghapus banner' });
+            throw err;
         }
     }
 }));

@@ -9,24 +9,39 @@ interface AuthState {
     isAuthenticated: boolean;
     isLoading: boolean;
     error: string | null;
-    executeLogin: (payload: LoginPayload) => Promise<boolean>; // Mengembalikan true jika sukses
+    executeLogin: (payload: LoginPayload) => Promise<boolean>;
     logout: () => void;
 }
 
-const getInitialUser = (): UserLogged | null => {
+// Mengembalikan null jika token kedaluwarsa
+const getInitialUserAndValidate = (): { user: UserLogged | null; token: string | null; isAuthenticated: boolean } => {
     const token = localStorage.getItem('token');
-    if (!token) return null;
+    if (!token) return { user: null, token: null, isAuthenticated: false };
+
     try {
-        return jwtDecode<UserLogged>(token);
+        const decoded = jwtDecode<UserLogged>(token);
+        const currentTime = Date.now() / 1000;
+
+        // Cek apakah token memiliki klaim 'exp' dan sudah kedaluwarsa
+        if (decoded.exp && decoded.exp < currentTime) {
+            localStorage.removeItem('token'); // Hapus token busuk dari awal
+            return { user: null, token: null, isAuthenticated: false };
+        }
+
+        return { user: decoded, token: token, isAuthenticated: true };
     } catch {
-        return null;
+        localStorage.removeItem('token');
+        return { user: null, token: null, isAuthenticated: false };
     }
 };
 
+// Ambil data validasi awal sebelum membuat store
+const initialAuthState = getInitialUserAndValidate();
+
 export const useAuthStore = create<AuthState>((set) => ({
-    token: localStorage.getItem('token'),
-    user: getInitialUser(),
-    isAuthenticated: !!localStorage.getItem('token'),
+    token: initialAuthState.token,
+    user: initialAuthState.user,
+    isAuthenticated: initialAuthState.isAuthenticated,
     isLoading: false,
     error: null,
 

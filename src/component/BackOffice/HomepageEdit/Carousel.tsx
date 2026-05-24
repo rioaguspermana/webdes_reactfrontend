@@ -3,13 +3,13 @@ import { CustomFlowbiteTheme } from "flowbite-react/types";
 import { cleanFileUrl } from "@/@utils/cleanFileUrl";
 import { useCarouselStore } from "@/store/useCarouselStore";
 import { useEffect, useState } from "react";
-import { useUiStore } from "@/store/useHomepageEditStore";
+import { useHomepageStore } from "@/store/useHomepageSettingStore";
 
 function CarouselComponent() {
     // Ambil state dan actions dari Zustand Store global
     const { carousels } = useCarouselStore();
     const [, setCurrentIndex] = useState<number>(0);
-    const { openManager } = useUiStore();
+    const { openManager } = useHomepageStore();
 
     const activeCarousels = carousels
         .filter(item => item.is_active)

@@ -47,7 +47,7 @@ export default function FloatingAlert() {
 
     return (
         <div
-            className={`fixed bottom-5 right-5 z-50 flex items-center gap-3 max-w-sm p-4 rounded-lg border shadow-lg transition-all duration-300 transform scale-100 animate-fade-in text-xs font-semibold uppercase tracking-wider ${currentStyle.container}`}
+            className={`fixed bottom-5 right-5 z-70 flex items-center gap-3 max-w-sm p-4 rounded-lg border shadow-lg transition-all duration-300 transform scale-100 animate-fade-in text-xs font-semibold uppercase tracking-wider ${currentStyle.container}`}
         >
             {/* AREA IKON TEMA */}
             <div className="shrink-0">

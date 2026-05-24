@@ -3,6 +3,7 @@ import { cleanFileUrl } from "@/@utils/cleanFileUrl";
 import { classMerge } from "@/@utils/classMerge";
 import { useEffect, useRef, useState } from "react";
 import { useHomepageStore } from "@/store/useHomepageSettingStore";
+import { useAlertStore } from "@/store/useAlertStore";
 
 const largeScreenShortcuts = [
     { name: 'Profil Desa', href: 'profil-desa', icon: 'icon_profil_desa.png' },
@@ -26,6 +27,7 @@ const smallScreenShortcuts = [
 ]
 
 function ShortcutComponent() {
+    const { showAlert } = useAlertStore()
     const { homepageSetting, updateFieldDinamic } = useHomepageStore();
     const [editTitle, setEditTitle] = useState<boolean>(false);
     const [editSub, setEditSub] = useState<boolean>(false);
@@ -85,8 +87,9 @@ function ShortcutComponent() {
                 await updateFieldDinamic(field, localSubTitle);
                 ref === 1 ? setEditSub(false) : setEditSub2(false);
             }
+            showAlert('Berhasil menyimpan perubahan', 'success', 3000);
         } catch (err) {
-            alert("Gagal menyimpan perubahan!");
+            showAlert("Gagal menyimpan perubahan!", 'error', 3000);
         }
     };
 
