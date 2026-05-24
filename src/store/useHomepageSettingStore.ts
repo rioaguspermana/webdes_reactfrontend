@@ -20,9 +20,6 @@ interface HomepageState {
     uploadImage: (file: File) => Promise<string | null>;
 }
 
-interface UiState {
-}
-
 export const useHomepageStore = create<HomepageState>((set) => ({
     isManagerOpen: false,
     homepageSetting: null,
