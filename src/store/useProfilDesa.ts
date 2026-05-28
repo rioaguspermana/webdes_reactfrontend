@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import axios from 'axios';
 import { ProfilDesa } from '@/@types/profil_desa';
-import api from '@/@utils/api';
+import api from '@/@utils/auth_req';
 
 export interface ProfileDesaState {
     // 1. State
@@ -27,8 +27,8 @@ export const useProfileStore = create<ProfileDesaState>((set) => ({
     fetchPublicProfilDesa: async () => {
         set({ isLoading: true, error: null, successMessage: null });
         try {
-            const response = await axios.get<ProfilDesa>('/api/profil-desa');
-            set({ profilDesa: response.data, isLoading: false });
+            const response = await axios.get<ApiResponse<ProfilDesa>>('/api/profil-desa');
+            set({ profilDesa: response.data.data, isLoading: false });
         } catch (err: any) {
             set({ error: err.response?.data?.message || 'Gagal memuat data desa', isLoading: false });
         }
@@ -37,8 +37,8 @@ export const useProfileStore = create<ProfileDesaState>((set) => ({
     fetchProfilDesa: async () => {
         set({ isLoading: true, error: null, successMessage: null });
         try {
-            const response = await api.get<ProfilDesa>('/api/backoffice/profil-desa');
-            set({ profilDesa: response.data, isLoading: false });
+            const response = await auth.get<ApiResponse<ProfilDesa>>('/api/backoffice/profil-desa');
+            set({ profilDesa: response.data.data, isLoading: false });
         } catch (err: any) {
             set({ error: err.response?.data?.message || 'Gagal memuat data desa', isLoading: false });
         }
@@ -75,7 +75,7 @@ export const useProfileStore = create<ProfileDesaState>((set) => ({
             }
 
             // 4. Kirim ke API Go dengan header 'multipart/form-data'
-            const response = await api.put('/api/backoffice/profil-desa', formData, {
+            const response = await auth.put('/api/backoffice/profil-desa', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

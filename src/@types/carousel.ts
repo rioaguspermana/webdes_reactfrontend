@@ -1,5 +1,5 @@
 export interface CarouselItem {
-    id: string;
+    id: number;
     title: string;
     sub_title: string;
     alt: string;

@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 // Buat instance khusus dengan konfigurasi dasar
-const api = axios.create({
+const auth = axios.create({
     baseURL: import.meta.env.VITE_APP_URL, // Sesuaikan URL backend Golang Anda
     headers: {
         'Accept': 'application/json',
@@ -9,7 +9,7 @@ const api = axios.create({
 });
 
 // Interceptor Request: Otomatis menyisipkan JWT Token sebelum request dikirim
-api.interceptors.request.use(
+auth.interceptors.request.use(
     (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
         const token = localStorage.getItem('token');
 
@@ -25,7 +25,7 @@ api.interceptors.request.use(
     }
 );
 
-api.interceptors.response.use(
+auth.interceptors.response.use(
     (response: AxiosResponse) => {
         // Jika request sukses, langsung teruskan responnya
         return response;
@@ -43,4 +43,4 @@ api.interceptors.response.use(
     }
 );
 
-export default api;
+export default auth;

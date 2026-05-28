@@ -1,13 +1,7 @@
 import { CarouselItem } from '@/@types/carousel';
-import api from '@/@utils/api';
+import auth from '@/@utils/auth_req';
 import axios from 'axios';
 import { create } from 'zustand';
-
-interface ApiResponse<T> {
-    success: boolean;
-    message: string;
-    data: T;
-}
 
 interface CarouselState {
     carousels: CarouselItem[];
@@ -48,7 +42,7 @@ export const useCarouselStore = create<CarouselState>((set, get) => ({
     fetchCarousels: async () => {
         set({ isLoading: true, error: null });
         try {
-            const response = await api.get<ApiResponse<CarouselItem[]>>('/api/backoffice/carousel/get-all');
+            const response = await auth.get<ApiResponse<CarouselItem[]>>('/api/backoffice/carousel/get-all');
             if (response.data.success) {
                 set({ carousels: response.data.data || [] });
             }
@@ -63,7 +57,7 @@ export const useCarouselStore = create<CarouselState>((set, get) => ({
     createCarousel: async (formData: FormData) => {
         set({ isLoading: true, error: null });
         try {
-            await api.post<ApiResponse<CarouselItem>>('/api/backoffice/carousel/create', formData, {
+            await auth.post<ApiResponse<CarouselItem>>('/api/backoffice/carousel/create', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             // Panggil fetch ulang agar state global langsung ter-update otomatis
@@ -80,7 +74,7 @@ export const useCarouselStore = create<CarouselState>((set, get) => ({
     updateCarousel: async (id: string, formData: FormData) => {
         set({ isLoading: true, error: null });
         try {
-            await api.put<ApiResponse<CarouselItem>>(`/api/backoffice/carousel/update/${id}`, formData, {
+            await auth.put<ApiResponse<CarouselItem>>(`/api/backoffice/carousel/update/${id}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             await get().fetchCarousels();
@@ -95,10 +89,10 @@ export const useCarouselStore = create<CarouselState>((set, get) => ({
     // DELETE DATA
     deleteCarousel: async (id: string) => {
         try {
-            await api.delete<ApiResponse<null>>(`/api/backoffice/carousel/delete/${id}`);
+            await auth.delete<ApiResponse<null>>(`/api/backoffice/carousel/delete/${id}`);
             // Optimistic update: langsung saring di lokal state supaya UI terasa sangat instan
             set((state) => ({
-                carousels: state.carousels.filter((item) => item.id !== id)
+                carousels: state.carousels.filter((item) => item.id !== Number(id))
             }));
         } catch (err: any) {
             set({ error: err.response?.data?.message || 'Gagal menghapus banner' });

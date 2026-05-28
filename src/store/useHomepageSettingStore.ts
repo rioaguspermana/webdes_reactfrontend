@@ -1,8 +1,7 @@
 import { HomepageSetting } from '@/@types/homepage_setting';
-import api from '@/@utils/api';
 import axios from 'axios';
 import { create } from 'zustand';
-import { useAlertStore } from './useAlertStore';
+import auth from '@/@utils/auth_req';
 
 interface HomepageState {
     homepageSetting: HomepageSetting | null;
@@ -33,8 +32,8 @@ export const useHomepageStore = create<HomepageState>((set) => ({
     fetchPublicHomepageSetting: async () => {
         set({ isLoading: true, error: null });
         try {
-            const response = await axios.get<HomepageSetting>('/api/homepage-setting');
-            set({ homepageSetting: response.data });
+            const response = await axios.get<ApiResponse<HomepageSetting>>('/api/homepage-setting');
+            set({ homepageSetting: response.data.data });
         } catch (err: any) {
             set({ error: err.response?.data?.message || 'Gagal memuat data pengaturan halaman utama' });
         } finally {
@@ -47,8 +46,8 @@ export const useHomepageStore = create<HomepageState>((set) => ({
         set({ isLoading: true, error: null });
         try {
             // Pastikan backend Golang Anda menyediakan endpoint GET /homepage untuk membaca id = '1'
-            const response = await api.get<HomepageSetting>('/api/backoffice/homepage-setting');
-            set({ homepageSetting: response.data });
+            const response = await auth.get<ApiResponse<HomepageSetting>>('/api/backoffice/homepage-setting');
+            set({ homepageSetting: response.data.data });
         } catch (err: any) {
             set({ error: err.response?.data?.message || 'Gagal memuat data pengaturan halaman utama' });
         } finally {
@@ -61,7 +60,7 @@ export const useHomepageStore = create<HomepageState>((set) => ({
     updateFieldDinamic: async (key, value) => {
         set({ isSaving: true });
         try {
-            const response = await api.post<{ success: boolean; message: string }>('/api/backoffice/homepage-setting/update-field', {
+            const response = await auth.post<{ success: boolean; message: string }>('/api/backoffice/homepage-setting/update-field', {
                 key,
                 value,
             });
@@ -87,13 +86,13 @@ export const useHomepageStore = create<HomepageState>((set) => ({
 
     // 3. UPLOAD GAMBAR SAMBUTAN KEPDES (MULTIPART FORM-DATA)
     uploadImage: async (file: File) => {
-        const { showAlert } = useAlertStore()
         set({ isSaving: true });
         const formData = new FormData();
         formData.append('sambutan_kepdes_image', file);
 
         try {
-            const response = await api.post<{ success: boolean; message: string; image_url: string }>(
+            // PERBAIKAN: Ubah properti tipe data dari image_url menjadi image agar cocok dengan backend Go
+            const response = await auth.post<{ success: boolean; message: string; image: string }>(
                 '/api/backoffice/homepage-setting/update-image',
                 formData,
                 {
@@ -102,7 +101,7 @@ export const useHomepageStore = create<HomepageState>((set) => ({
             );
 
             if (response.data.success) {
-                const newPath = response.data.image_url;
+                const newPath = response.data.image; // PERBAIKAN: Ambil properti response.data.image
 
                 // Perbarui lokal state untuk path gambar Kepala Desa yang baru
                 set((state) => {
@@ -116,10 +115,12 @@ export const useHomepageStore = create<HomepageState>((set) => ({
                 });
                 return newPath;
             }
-            return null;
+
+            // Lempar pesan kegagalan dari backend jika success bernilai false
+            throw new Error(response.data.message || 'Gagal mengunggah foto');
         } catch (err: any) {
-            showAlert(err.response?.data?.message || 'Gagal mengunggah foto', 'error', 3000);
-            return null;
+            // PONDASI PERBAIKAN: Gunakan throw err agar error ditangkap oleh blok catch di fungsi pemanggil
+            throw err;
         } finally {
             set({ isSaving: false });
         }

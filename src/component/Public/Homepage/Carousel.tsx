@@ -2,10 +2,21 @@ import { Carousel, createTheme } from "flowbite-react";
 import { CustomFlowbiteTheme } from "flowbite-react/types";
 import { cleanFileUrl } from "@/@utils/cleanFileUrl";
 import { useCarouselStore } from "@/store/useCarouselStore";
+import { useEffect, useState } from "react";
 
 function CarouselComponent() {
     // Ambil state dan actions dari Zustand Store global
     const { carousels } = useCarouselStore();
+    const [, setCurrentIndex] = useState<number>(0);
+
+    const activeCarousels = carousels
+        .filter(item => item.is_active === true)
+        .sort((a, b) => a.urutan - b.urutan);
+
+    // Reset index jika jumlah list carousel berubah (misal setelah dihapus/ditambah)
+    useEffect(() => {
+        setCurrentIndex(0);
+    }, [activeCarousels.length]);
 
     // Buat objek tema kustom untuk memaksa posisi relative pada item slide
     const bannerTheme: CustomFlowbiteTheme = createTheme({
@@ -23,7 +34,7 @@ function CarouselComponent() {
     return (
         <div className="p-2 lg:p-0 h-64 lg:h-screen w-full dark:bg-green-700 mt-24 lg:mt-0">
             <Carousel slideInterval={5000} theme={bannerTheme.carousel}>
-                {carousels.map((carousel, i) => (
+                {activeCarousels.map((carousel, i) => (
                     <div key={i} className="h-full w-full">
                         <img src={cleanFileUrl(`${import.meta.env.VITE_APP_URL}/image/`, carousel.image)} alt={carousel.alt} className="-z-20 h-full w-full object-cover" />
                         <div className="absolute top-0 h-full w-full bg-black/35">

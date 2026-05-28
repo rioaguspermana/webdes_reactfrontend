@@ -104,15 +104,21 @@ function WelcomeSpeechComponent() {
         fileInputRef.current?.click();
     };
 
-    // Aksi menyimpan file gambar baru ke backend Golang via Zustand
     const handleSaveImage = async () => {
         if (!selectedFile) return;
+
         try {
             await uploadImage(selectedFile);
             setSelectedFile(null);
             showAlert('Foto sambutan Kepala Desa berhasil diperbarui!', 'success');
-        } catch (err) {
+        } catch (err: any) {
+            // PONDASI PERBAIKAN: Menangkap eror respons dari Axios secara dinamis
             console.error("Gagal mengunggah foto:", err);
+
+            // Ambil pesan eror spesifik dari backend jika tersedia (misal: "Ukuran foto terlalu besar, maksimal 2 MB")
+            const errorMessage = err.response?.data?.message || err.message || 'Terjadi kesalahan sistem saat mengunggah gambar';
+
+            showAlert(errorMessage, 'error');
         }
     };
 

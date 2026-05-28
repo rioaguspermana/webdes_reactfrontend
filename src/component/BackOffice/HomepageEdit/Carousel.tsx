@@ -12,7 +12,7 @@ function CarouselComponent() {
     const { openManager } = useHomepageStore();
 
     const activeCarousels = carousels
-        .filter(item => item.is_active)
+        .filter(item => item.is_active === true)
         .sort((a, b) => a.urutan - b.urutan);
 
     // Reset index jika jumlah list carousel berubah (misal setelah dihapus/ditambah)
@@ -33,6 +33,7 @@ function CarouselComponent() {
             }
         }
     });
+
 
     return (
         <div className="lg:p-0 h-64 lg:h-full w-full dark:bg-green-700 lg:mt-0">
