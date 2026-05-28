@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import axios from 'axios';
 import { ProfilDesa } from '@/@types/profil_desa';
-import api from '@/@utils/auth_req';
+import auth from '@/@utils/auth_req';
 
 export interface ProfileDesaState {
     // 1. State

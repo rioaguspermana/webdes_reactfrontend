@@ -11,7 +11,7 @@ export default function CarouselManager() {
     const { carousels, createCarousel, error, updateCarousel, deleteCarousel, isLoading, successMessage } = useCarouselStore();
     const { isManagerOpen, closeManager } = useHomepageStore();
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
-    const [selectedId, setSelectedId] = useState<string | null>(null);
+    const [selectedId, setSelectedId] = useState<number | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string>('');
 

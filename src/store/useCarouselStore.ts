@@ -13,8 +13,8 @@ interface CarouselState {
     fetchPublicCarousels: () => Promise<void>;
     fetchCarousels: () => Promise<void>;
     createCarousel: (formData: FormData) => Promise<void>;
-    updateCarousel: (id: string, formData: FormData) => Promise<void>;
-    deleteCarousel: (id: string) => Promise<void>;
+    updateCarousel: (id: number, formData: FormData) => Promise<void>;
+    deleteCarousel: (id: number) => Promise<void>;
 }
 
 export const useCarouselStore = create<CarouselState>((set, get) => ({
@@ -71,7 +71,7 @@ export const useCarouselStore = create<CarouselState>((set, get) => ({
     },
 
     // UPDATE DATA
-    updateCarousel: async (id: string, formData: FormData) => {
+    updateCarousel: async (id: number, formData: FormData) => {
         set({ isLoading: true, error: null });
         try {
             await auth.put<ApiResponse<CarouselItem>>(`/api/backoffice/carousel/update/${id}`, formData, {
@@ -87,7 +87,7 @@ export const useCarouselStore = create<CarouselState>((set, get) => ({
     },
 
     // DELETE DATA
-    deleteCarousel: async (id: string) => {
+    deleteCarousel: async (id: number) => {
         try {
             await auth.delete<ApiResponse<null>>(`/api/backoffice/carousel/delete/${id}`);
             // Optimistic update: langsung saring di lokal state supaya UI terasa sangat instan
